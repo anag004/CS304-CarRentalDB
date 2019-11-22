@@ -22,7 +22,8 @@ do
         then
             :
         else 
-            scp -r app anag004@remote.students.cs.ubc.ca:~/public_html/
+            echo "Copying ..."
+            scp -r app anag004@remote.students.cs.ubc.ca:~/public_html/ >& /dev/null
             modTimes[$file]=$newTime
         fi 
     done
