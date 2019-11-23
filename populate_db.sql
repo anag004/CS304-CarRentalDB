@@ -143,7 +143,7 @@ create table reservations (
 
 Name					   Null?    Type
  ----------------------------------------- -------- ----------------------------
- CONF_NO				   NOT NULL NUMBER(38)
+ CONF_NO                                   NOT NULL VARCHAR2(40)
  VTNAME 					    VARCHAR2(40)
  DLICENSE					    NUMBER(38)
  FROM_DATETIME					    DATE
@@ -151,13 +151,13 @@ Name					   Null?    Type
 
 */
 
-insert into reservations values (1111, 'truck', 1, to_date('1998/05/31:12:00AM', 'yyyy/mm/dd:hh:miam'), to_date('1998/06/05:12:00AM', 'yyyy/mm/dd:hh:miam'));
+insert into reservations values ('1111', 'truck', 1, to_date('1998/05/31:12:00AM', 'yyyy/mm/dd:hh:miam'), to_date('1998/06/05:12:00AM', 'yyyy/mm/dd:hh:miam'));
 
-insert into reservations values (2222, 'sedan', 2, to_date('1998/06/01:12:00AM', 'yyyy/mm/dd:hh:miam'), to_date('1998/06/06:12:00AM', 'yyyy/mm/dd:hh:miam'));
+insert into reservations values ('2222', 'sedan', 2, to_date('1998/06/01:12:00AM', 'yyyy/mm/dd:hh:miam'), to_date('1998/06/06:12:00AM', 'yyyy/mm/dd:hh:miam'));
 
-insert into reservations values (3333, 'electric', 3, to_date('1998/06/08:12:00AM', 'yyyy/mm/dd:hh:miam'), to_date('1998/06/15:12:00AM', 'yyyy/mm/dd:hh:miam'));
+insert into reservations values ('3333', 'electric', 3, to_date('1998/06/08:12:00AM', 'yyyy/mm/dd:hh:miam'), to_date('1998/06/15:12:00AM', 'yyyy/mm/dd:hh:miam'));
 
-insert into reservations values (4444, 'electric', 4, to_date('1998/06/17:12:00AM', 'yyyy/mm/dd:hh:miam'), to_date('1998/06/20:12:00AM', 'yyyy/mm/dd:hh:miam'));
+insert into reservations values ('4444', 'electric', 4, to_date('1998/06/17:12:00AM', 'yyyy/mm/dd:hh:miam'), to_date('1998/06/20:12:00AM', 'yyyy/mm/dd:hh:miam'));
 
 /* ======= rentals ========= 
 
@@ -189,17 +189,17 @@ Name					   Null?    Type
  CARD_NAME					    VARCHAR2(40)
  CARD_NO					    NUMBER(38)
  EXP_DATE					    DATE
- CONF_NO					    NUMBER(38)
+ CONF_NO                                            VARCHAR2(40) 
 
 */
 
-insert into rentals values (1, 1, 1, to_date('1998/05/31:12:00AM', 'yyyy/mm/dd:hh:miam'), to_date('1998/06/05:12:00AM', 'yyyy/mm/dd:hh:miam'), 1000, 'Lorem Ipsum', 1234, to_date('2020/05/31', 'yyyy/mm/dd'), 1111);
+insert into rentals values (1, 1, 1, to_date('1998/05/31:12:00AM', 'yyyy/mm/dd:hh:miam'), to_date('1998/06/05:12:00AM', 'yyyy/mm/dd:hh:miam'), 1000, 'Lorem Ipsum', 1234, to_date('2020/05/31', 'yyyy/mm/dd'), '1111');
 
-insert into rentals values (2, 2, 2, to_date('1998/06/01:12:00AM', 'yyyy/mm/dd:hh:miam'), to_date('1998/06/06:12:00AM', 'yyyy/mm/dd:hh:miam'), 1000, 'Lorem Ipsum 2', 1235, to_date('2021/05/31', 'yyyy/mm/dd'), 2222);
+insert into rentals values (2, 2, 2, to_date('1998/06/01:12:00AM', 'yyyy/mm/dd:hh:miam'), to_date('1998/06/06:12:00AM', 'yyyy/mm/dd:hh:miam'), 1000, 'Lorem Ipsum 2', 1235, to_date('2021/05/31', 'yyyy/mm/dd'), '2222');
 
-insert into rentals values (3, 3, 3, to_date('1998/06/08:12:00AM', 'yyyy/mm/dd:hh:miam'), to_date('1998/06/15:12:00AM', 'yyyy/mm/dd:hh:miam'), 1000, 'Lorem Ipsum 3', 1236, to_date('2021/05/31', 'yyyy/mm/dd'), 3333);
+insert into rentals values (3, 3, 3, to_date('1998/06/08:12:00AM', 'yyyy/mm/dd:hh:miam'), to_date('1998/06/15:12:00AM', 'yyyy/mm/dd:hh:miam'), 1000, 'Lorem Ipsum 3', 1236, to_date('2021/05/31', 'yyyy/mm/dd'), '3333');
 
-insert into rentals values (4, 4, 4, to_date('1998/06/17:12:00AM', 'yyyy/mm/dd:hh:miam'), to_date('1998/06/20:12:00AM', 'yyyy/mm/dd:hh:miam'), 1000, 'Lorem Ipsum 4', 1237, to_date('2021/05/31', 'yyyy/mm/dd'), 4444);
+insert into rentals values (4, 4, 4, to_date('1998/06/17:12:00AM', 'yyyy/mm/dd:hh:miam'), to_date('1998/06/20:12:00AM', 'yyyy/mm/dd:hh:miam'), 1000, 'Lorem Ipsum 4', 1237, to_date('2021/05/31', 'yyyy/mm/dd'), '4444');
 
 /* ========= returns ============ 
 
