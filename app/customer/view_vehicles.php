@@ -3,6 +3,7 @@
 <body>
     <h3>View Vehicles</h3>
     <form method="get">
+    <input type = "hidden" name="FETCH_DATA" value="true">
     <br>
         Car Type: 
         <br>
@@ -37,7 +38,7 @@
         <br>
         <br>
         <input type='submit' value="Search">
-        <input type='reset' value="Reset">
+        <input type='button' onclick="window.location.href='./view_vehicles.php'" value="Reset">
         <hr>
     </form> 
     <?php
@@ -148,12 +149,14 @@
             echo "<h3> " . $counter . " vehicles found </h3><br>";
         }
         
-        $queryString = getQueryString();
-        if (!$queryString) {
-            echo "ERROR: Invalid request for vehicle list";
-        } else {
-            $result = $db->executePlainSQL($queryString);
-            displayResult($result);
+        if ($_GET['FETCH_DATA'] == "true") {
+            $queryString = getQueryString();
+            if (!$queryString) {
+                echo "ERROR: Invalid request for vehicle list";
+            } else {
+                $result = $db->executePlainSQL($queryString);
+                displayResult($result);
+            }
         }
     ?>
 </body>
