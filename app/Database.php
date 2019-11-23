@@ -7,7 +7,7 @@ class Database {
     function connect() {
         $this->db_conn = OCILogon("ora_anag004", "a23835341", "dbhost.students.cs.ubc.ca:1522/stu");
         if ($this->db_conn) {
-            echo "Connected to DB...<br>";
+            // echo "Connected to DB...<br>";
             return true;
         } else {
             $e = OCI_Error(); // For OCILogon errors pass no handle
