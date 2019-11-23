@@ -22,7 +22,7 @@
 
             $db = new Database();
             $db->connect();
-            $result = $db->executePlainSQL("SELECT * FROM vehicle_type");
+            $result = $db->executePlainSQL("SELECT * FROM vehicle_types");
             createCarTypesDropdown($result);
         ?>
     </body>
