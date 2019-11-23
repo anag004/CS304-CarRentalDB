@@ -2,7 +2,7 @@
 <head><title>View Vehicles</title></head>
 <body>
     <h3>View Vehicles</h3>
-    <form method="post">
+    <form method="get">
     <br>
         Car Type: 
         <br>
@@ -19,21 +19,21 @@
         Location: 
         <br>
         <?php 
-            $result = $db->executePlainSQL("SELECT * FROM vehicle_types"); //fix
-            echo ProjectUtils::getDropdownString($result,"VTNAME");
+            $result = $db->executePlainSQL("SELECT DISTINCT location FROM vehicles"); //fix
+            echo ProjectUtils::getDropdownString($result,"LOCATION");
         ?>
         <br>
         <br>
         From: 
         <br>
-        <input type='date' name="date1">
-        <input type='time' name="time1">
+        <input type='date' name="FROM_DATE">
+        <input type='time' name="FROM_TIME">
         <br>
         <br>
         To: 
         <br>
-        <input type='date' name="date2">
-        <input type='time' name="time2">
+        <input type='date' name="TO_DATE">
+        <input type='time' name="TO_TIME">
         <br>
         <br>
         <input type='submit' value="Search">
@@ -46,8 +46,10 @@
             $result = "SELECT * FROM vehicles v";
             $counter = 0; // Stores the number of values specified
 
+            echo "VTNAME: " . $_GET['VTNAME'];
+
             // Check for VTNAME
-            if ($_GET['VTNAME']) {
+            if ($_GET['VTNAME'] != 'all' && $_GET['VTNAME'] != '') {
                 if ($counter == 0) {
                     $result = $result . " WHERE ";
                     $counter++;
@@ -100,7 +102,7 @@
                 return false;
             } 
 
-            if ($_GET['LOCATION']) {
+            if ($_GET['LOCATION'] != 'all' && $_GET['LOCATION'] != '') {
                 if ($counter == 0) {
                     $result = $result . " WHERE ";
                     $counter++;

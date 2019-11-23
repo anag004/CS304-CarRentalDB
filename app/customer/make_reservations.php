@@ -19,8 +19,8 @@
     Location: 
     <br>
     <?php 
-        $result = $db->executePlainSQL("SELECT * FROM vehicle_types"); //fix
-        echo ProjectUtils::getDropdownString($result,"VTNAME");
+         $result = $db->executePlainSQL("SELECT DISTINCT location FROM vehicles"); //fix
+         echo ProjectUtils::getDropdownString($result,"LOCATION");
     ?>
     <br>
     <br>

@@ -10,19 +10,21 @@
     <br>
     Car Type: 
     <br>
-    <select name="cartype">
-        <option value="volvo">Volvo</option>
-        <option value="saab">Saab</option>
-        <option value="fiat">Fiat</option>
-        <option value="audi">Audi</option> 
-    </select>
+    <?php 
+        require "../Database.php";
+        require "../ProjectUtils.php";
+        $db = new Database();
+        $db->connect();
+        $result = $db->executePlainSQL("SELECT * FROM vehicle_types");
+        echo ProjectUtils::getDropdownString($result,"VTNAME");
+    ?>
     <br>
     <br>
     Location: 
     <br>
     <?php 
-        $result = $db->executePlainSQL("SELECT * FROM vehicle_types"); //fix
-        echo ProjectUtils::getDropdownString($result,"VTNAME");
+         $result = $db->executePlainSQL("SELECT DISTINCT location FROM vehicles"); //fix
+         echo ProjectUtils::getDropdownString($result,"LOCATION");
     ?>
     <br>
     <br>
