@@ -59,7 +59,7 @@ create table vehicles (
 
 
 create table reservations (
-	conf_no integer,
+	conf_no varchar(40),
 	vtname varchar(40),
 	dlicense integer,
 	from_datetime date,
@@ -82,7 +82,7 @@ create table rentals (
 	card_name varchar(40),
 	card_no integer,
 	exp_date date,
-	conf_no integer,
+	conf_no varchar(40),
 	primary key (rid),
 	foreign key (conf_no) references reservations(conf_no),
 	foreign key (vlicense) references vehicles(vlicense),
