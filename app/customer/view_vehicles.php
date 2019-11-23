@@ -15,13 +15,18 @@
 
     <link href="https://fonts.googleapis.com/css?family=Roboto+Slab&display=swap" rel="stylesheet">
 </head>
-<body class="bg-info" style="font-family: 'Roboto Slab', serif;">
+<body style="font-family: 'Roboto Slab', serif; background-color: #008a9f; ">
     <div class = "row h-100">
         <div class="col-2"></div>
         <div class = "col-8 my-auto">
             <div class="card rounded shadow shadow-sm">
                 <div class="card-header">
-                    <h3 class="mb-0">View Vehicles</h3>
+                <h3 class="mb-0">
+                        View Vehicles 
+                        <div class="float-right btn btn-info" onclick="window.location.href='../home.php';">
+                            Home
+                        </div>
+                    </h3>
                 </div>
                 <div class="card-body">
                     <form method="get">
@@ -70,7 +75,6 @@
         </div>
         <div class="col-2"></div>
     </div>
->>>>>>> Stashed changes
     <?php
         // Prints the result in an HTML table
         function displayResult($result) {

@@ -1,6 +1,6 @@
 <html>
 <head>
-    <title>View Vehicles</title>
+    <title>Rent Vehicles</title>
     <!-- Latest compiled and minified CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
 
@@ -15,13 +15,18 @@
 
     <link href="https://fonts.googleapis.com/css?family=Roboto+Slab&display=swap" rel="stylesheet">
 </head>
-<body class="bg-info" style="font-family: 'Roboto Slab', serif;">
+<body style="font-family: 'Roboto Slab', serif; background-color: #008a9f; ">
     <div class = "row h-100">
         <div class="col-md-2"></div>
         <div class = "col-md-8 mt-5 mb-5">
             <div class="card rounded shadow shadow-sm">
                 <div class="card-header">
-                    <h3 class="mb-0">View Vehicles</h3>
+                <h3 class="mb-0">
+                        Rent Vehicles 
+                        <div class="float-right btn btn-info" onclick="window.location.href='../home.php';">
+                            Home
+                        </div>
+                    </h3>
                 </div>
                 <div class="card-body">
                     <form method="post">
@@ -78,8 +83,8 @@
                             <label>Card Expiry Date:</label>
                             <input type='date' name="exp_date" class="form-control">
                         </div>
-                        <input type='submit' value="Search" class="btn btn-info">
-                        <input type='button' onclick="window.location.href='./make_reservations.php'" value="Reset" class="btn btn-info">
+                        <input type='submit' value="Rent Vehicle" class="btn btn-info">
+                        <input type='button' onclick="window.location.href='./rent_vehicles.php'" value="Reset" class="btn btn-info">
                     </form> 
                 </div>
                 <div class="card-footer">
