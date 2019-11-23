@@ -22,7 +22,7 @@
         }
 
         public static function printResultInTable($result, $arr) {
-            echo "DISPLAY CALLED <br>";
+            // echo "DISPLAY CALLED <br>";
             $counter = 0;
             $arr_len = count($arr);
         
@@ -125,5 +125,11 @@
             // echo $result;
             return $result;
         }
+        public static function getErrorBox($text){
+            return '<div class="alert alert-danger alert-dismissible">
+            <button type="button" class="close" data-dismiss="alert">&times;</button>
+            <strong>ERROR: </strong>'.$text.'</div>';
+        }
+
     }
 ?>

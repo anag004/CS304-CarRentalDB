@@ -17,8 +17,8 @@
 </head>
 <body style="font-family: 'Roboto Slab', serif; background-color: #008a9f; ">
     <div class = "row h-100">
-        <div class="col-2"></div>
-        <div class = "col-8 my-auto">
+        <div class="col-md-2"></div>
+        <div class = "col-md-8 my-auto">
             <div class="card rounded shadow shadow-sm">
                 <div class="card-header">
                 <h3 class="mb-0">
@@ -46,7 +46,7 @@
                 </div>
             </div>
         </div>
-        <div class="col-2"></div>
+        <div class="col-md-2"></div>
     </div>
 </body>
 </html> 
