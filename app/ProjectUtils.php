@@ -21,12 +21,38 @@
             return "to_date(" . $date_string . ", "  . $date_format . ")";
         }
 
+        public static function printResultInTable($result, $arr) {
+            echo "DISPLAY CALLED <br>";
+            $counter = 0;
+            $arr_len = count($arr);
+        
+            echo "<table border = '1'>";
+
+            echo "<tr>";
+            echo "<th>" . "SNO" . "</th>";
+            for($i = 0; $i < $arr_len; $i++) {
+                echo "<th>" . $arr[$i] . "</th>";
+            }
+            echo "</tr>";
+
+            while ($row = OCI_Fetch_Array($result, OCI_BOTH)) {
+                $counter++;
+                echo "<tr>";
+                echo "<td>" . $counter . "</td>";
+                for($i = 0; $i < $arr_len; $i++) {
+                    echo "<td>" . $row[$arr[$i]] . "</td>";
+                }
+                echo "</tr>";
+            }
+
+            echo "</table>";
+            return $counter;
+        }
+
         // Returns an SQL command for the appropriate vehicle
         public static function getVehicleQueryString($requestObject) {
             $result = "";
             $counter = 0; // Stores the number of values specified
-
-            echo "VTNAME: " . $requestObject['VTNAME'];
 
             // Check for VTNAME
             if ($requestObject['VTNAME'] != 'all' && $requestObject['VTNAME'] != '') {
