@@ -49,6 +49,11 @@ class Database {
     function __destruct() {
         OCI_close($this->db_conn);
     }
+
+    function commit() {
+        echo "DATA COMMITTED<br>";
+        OCICommit($this->db_conn);
+    }
  }
 
 ?>

@@ -49,18 +49,18 @@
                         <div class="form-group">
                             <label>From:</label> 
                             
-                            <input type='date' name="FROM_DATE" class="form-control" required="true">
-                            <input type='time' name="FROM_TIME" class="form-control" required="true">
+                            <input type='date' name="FROM_DATE" class="form-control" required="true" value="01/18/1999">
+                            <input type='time' name="FROM_TIME" class="form-control" required="true" value="23:59">
                         </div>
                         <div class="form-group">        
                             <label>To: </label>
                             
-                            <input type='date' name="TO_DATE" class="form-control" required="true">
-                            <input type='time' name="TO_TIME" class="form-control" required="true">
+                            <input type='date' name="TO_DATE" class="form-control" required="true" value="01/18/1999">
+                            <input type='time' name="TO_TIME" class="form-control" required="true" value="23:59">
                         </div>
                         <div class="form-group">
                             <label>Driver's License Number:</label> 
-                            <input type='tel' name="DLICENSE" pattern="[0-9]*" class="form-control" required="true">
+                            <input type='tel' name="DLICENSE" pattern="[0-9]*" class="form-control" required="true" default="1'">
                         </div>
                         <input type='submit' value="Search" class="btn btn-info">
                         <input type='button' onclick="window.location.href='./make_reservations.php'" value="Reset" class="btn btn-info">
@@ -88,15 +88,17 @@
                     $toDate = ProjectUtils::constructDate($_POST['TO_DATE'], $_POST['TO_TIME']);
 
                     // The details to be inserted in order
-                    $insertDetails = $_POST['VTNAME'] . ", " . $_POST['DLICENSE'] . ", " . $fromDate . ", " . $toDate;
+                    $insertDetails = "'" . $_POST['VTNAME'] . "'" . ", " . $_POST['DLICENSE'] . ", " . $fromDate . ", " . $toDate;
                     $confNo = "'" . hash('ripemd160', $insertDetails) . "'";
 
                     echo "CONFIRMATION NO: " . $confNo . "<br>";
 
-                    // Insert the details into the reservation table.
-                    $db->executePlainSQL("INSERT INTO reservations VALUES (" . $confNo . ", " . $insertDetails . ")");
-                    echo "MADE RESERVATION<br>";
+                    echo "COMMAND: " . "INSERT INTO reservations VALUES (" . $confNo . ", " . $insertDetails . ")" . "<br>";
 
+                    // Insert the details into the reservation table.
+                    $result = $db->executePlainSQL("INSERT INTO reservations VALUES (" . $confNo . ", " . $insertDetails . ")");
+                    $db->commit();
+                    echo "MADE RESERVATION<br>";
                 } else {
                     echo "It seems you are not registered as a customer. Go to <a href='new_customer.php'>this</a> link to register.";
                 }
