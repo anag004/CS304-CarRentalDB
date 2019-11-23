@@ -49,18 +49,18 @@
                         <div class="form-group">
                             <label>From:</label> 
                             
-                            <input type='date' name="FROM_DATE" class="form-control">
-                            <input type='time' name="FROM_TIME" class="form-control">
+                            <input type='date' name="FROM_DATE" class="form-control" required="true">
+                            <input type='time' name="FROM_TIME" class="form-control" required="true">
                         </div>
                         <div class="form-group">        
                             <label>To: </label>
                             
-                            <input type='date' name="TO_DATE" class="form-control">
-                            <input type='time' name="TO_TIME" class="form-control">
+                            <input type='date' name="TO_DATE" class="form-control" required="true">
+                            <input type='time' name="TO_TIME" class="form-control" required="true">
                         </div>
                         <div class="form-group">
                             <label>Driver's License Number:</label> 
-                            <input type='tel' name="dlicense" pattern="[0-9]*" class="form-control">
+                            <input type='tel' name="DLICENSE" pattern="[0-9]*" class="form-control" required="true">
                         </div>
                         <input type='submit' value="Search" class="btn btn-info">
                         <input type='button' onclick="window.location.href='./make_reservations.php'" value="Reset" class="btn btn-info">
@@ -73,6 +73,76 @@
         </div>
         <div class="col-md-2"></div>
     </div>
-</form> 
+    <?php
+        // Check if the USER has made a POST request
+        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+            echo "POSTING...<br>";
+
+            if (existVehicles()) {
+                echo "VEHICLES EXIST...<br>";
+                if (existCustomer()) {
+                    echo "EVERYTHING ALRIGHT...<br>";
+
+                    // Add the reservation into the database
+                    $fromDate = ProjectUtils::constructDate($_POST['FROM_DATE'], $_POST['FROM_TIME']);
+                    $toDate = ProjectUtils::constructDate($_POST['TO_DATE'], $_POST['TO_TIME']);
+
+                    // The details to be inserted in order
+                    $insertDetails = $_POST['VTNAME'] . ", " . $_POST['DLICENSE'] . ", " . $fromDate . ", " . $toDate;
+                    $confNo = "'" . hash('ripemd160', $insertDetails) . "'";
+
+                    echo "CONFIRMATION NO: " . $confNo . "<br>";
+
+                    // Insert the details into the reservation table.
+                    $db->executePlainSQL("INSERT INTO reservations VALUES (" . $confNo . ", " . $insertDetails . ")");
+                    echo "MADE RESERVATION<br>";
+
+                } else {
+                    echo "It seems you are not registered as a customer. Go to <a href='new_customer.php'>this</a> link to register.";
+                }
+            } else {
+                echo "ERROR: No vehicles exist.<br>";
+            }
+        }
+
+        // Checks if there exists some customer with the given dlicense
+        function existCustomer() {
+            echo "CHECKING IF CUSTOMER EXISTS...<br>";
+            global $db; 
+            $result = $db->executePlainSQL("SELECT COUNT(*) FROM customers WHERE dlicense = " . $_POST['DLICENSE']);
+            echo "EXECUTED QUERY<br>";
+            var_dump($result);
+            if (($row = oci_fetch_row($result)) != false) {
+                var_dump($row);
+                if ($row[0] == 0) {
+                    return false;
+                } else {
+                    return true;
+                }
+            } else {
+                echo "DBError<br>";
+                return false;
+            }
+        }
+
+        // Returns true iff there exist some vehicles 
+        function existVehicles() {
+            global $db; 
+
+            $queryString = "SELECT COUNT(*) FROM vehicles v" . ProjectUtils::getVehicleQueryString($_POST);
+            $result = $db->executePlainSQL($queryString);
+
+            if (($row = oci_fetch_row($result)) != false) {
+                if ($row[0] == 0) {
+                    return false;
+                } else {
+                    return true;
+                }
+            } else {
+                echo "DBError<br>";
+                return false;
+            }
+        }   
+    ?>
 </body>
 </html> 
