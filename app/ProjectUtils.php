@@ -15,6 +15,12 @@
             return $output;
         }
 
+        public static function constructDate($date, $time) {
+            $date_string = "'" . $date . ':' . $time . "'";
+            $date_format = "'YYYY-MM-DD:HH24:MI'";
+            return "to_date(" . $date_string . ", "  . $date_format . ")";
+        }
+
         // Returns an SQL command for the appropriate vehicle
         public static function getVehicleQueryString($requestObject) {
             $result = "";
@@ -56,8 +62,8 @@
                     return false;
                 }
 
-                $date_format = "'YYYY-MM-DD:HH24:MI'";
-                $from_date = "'" . $requestObject['FROM_DATE'] . ':' . $requestObject['FROM_TIME'] . "'";
+                // $date_format = "'YYYY-MM-DD:HH24:MI'";
+                $from_date = ProjectUtils::constructDate($requestObject['FROM_DATE'], $requestObject['FROM_TIME']);
                 
                 if (!$requestObject['TO_DATE']) {
                     echo "DID NOT FIND TO_DATE";
@@ -69,9 +75,9 @@
                     return false;
                 }
 
-                $to_date = "'" . $requestObject['TO_DATE'] . ':' . $requestObject['TO_TIME'] . "'";
+                $to_date = ProjectUtils::constructDate($requestObject['TO_DATE'], $requestObject['TO_TIME']);
 
-                $result = $result . "NOT EXISTS ( SELECT  * FROM rentals r WHERE (" . "to_date(" . $from_date . ", "  . $date_format . "), to_date(" . $to_date . ", " . $date_format . ")) OVERLAPS (r.FROM_DATETIME, r.TO_DATETIME) AND r.vlicense = v.vlicense )";
+                $result = $result . "NOT EXISTS ( SELECT  * FROM rentals r WHERE (" . $from_date . ", " . $to_date . ") OVERLAPS (r.FROM_DATETIME, r.TO_DATETIME) AND r.vlicense = v.vlicense )";
             } else if ($requestObject['FROM_TIME'] || $requestObject['TO_DATE'] || $requestObject['TO_TIME']) {
                 return false;
             } 
