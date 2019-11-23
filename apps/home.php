@@ -8,8 +8,7 @@
 <h3> Clerk Actions </h3>
 <button onclick="window.location.href='clerk/rent_vehicles.php';">Rent Vehicles</button>
 <button onclick="window.location.href='clerk/return_vehicles.php';">Return Vehicles</button>
-<button onclick="window.location.href='clerk/rent_reports.php';">Rent Reports</button>
-<button onclick="window.location.href='clerk/return_reports.php';">Return Reports</button>
+<button onclick="window.location.href='clerk/reports.php';">Reports</button>>
 <hr>
 </body>
 </html> 
