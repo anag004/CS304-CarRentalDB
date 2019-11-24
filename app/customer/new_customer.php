@@ -24,19 +24,19 @@
                     <form>
                         <div class="form-group">
                             <label> Name: </label>
-                            <input type='text' name='name' class="form-control">
+                            <input type='text' name='name' class="form-control" required="true">
                         </div>
                         <div class="form-group">
                             <label>Address: </label>
-                            <input type='text' name='address' class="form-control">
+                            <input type='text' name='address' class="form-control" required="true">
                         </div>
                         <div class="form-group">
                             <label>Cellphone Number: </label>
-                            <input type="tel" name="cellphone" pattern="[0-9]{3}-[0-9]{2}-[0-9]{3}" class="form-control">
+                            <input type="tel" name="cellphone" pattern="[0-9]{3}-[0-9]{2}-[0-9]{3}" class="form-control" required="true">
                         </div>
                         <div class="form-group">
                             <label>Driver's Licence Number:</label> 
-                            <input type='tel' name="dlicense" class="form-control">
+                            <input type='tel' name="dlicense" class="form-control" required="true">
                         </div>
                         <div class="form-group">                        
                             <input type='submit' value="Create New Account" class = "btn btn-info">
@@ -51,21 +51,10 @@
         </div>
         <div class="col-md-2"></div>
     </div>
-<head><title>Create Customer Profile</title></head>
-<body>
-<h3>Create Customer Profile</h3>
-<
-    Na
-    <input type='text' name='na
-    Addre
-    <input type='text' name='addre
-    Cellphone Numb
-    <input type="tel" name="cellphone" pattern="[0-9]{3}-[0-9]{2}-[0-9]{
-    Driver's Licence Numb
-    <input type='tel' name="dlicen
-    <input type='submit' value="Create New Account">
-    <input type='reset' value="Reset">
-    <hr>
-</form>
+    <?php
+        // Registers a new customer
+        
+
+    ?>
 </body>
 </html> 
