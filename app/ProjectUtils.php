@@ -63,6 +63,17 @@
             return $confNo;
         }
 
+        // Checks if a reservation exists with the given data
+        public static function getReservation($confNo, $db_conn) {
+            $result = $db_conn->executePlainSQL("SELECT * FROM reservations WHERE conf_no = " . "'" . $confNo . "'");
+
+            if (($row = oci_fetch_array($result)) != false) {
+                return $row;
+            } else {
+                return false;
+            }
+        }
+
         // Returns an SQL command for the appropriate vehicle
         public static function getVehicleQueryString($requestObject) {
             $result = "";
@@ -117,7 +128,7 @@
 
                 $to_date = ProjectUtils::constructDate($requestObject['TO_DATE'], $requestObject['TO_TIME']);
 
-                $result = $result . "NOT EXISTS ( SELECT  * FROM rentals r WHERE (" . $from_date . ", " . $to_date . ") OVERLAPS (r.FROM_DATETIME, r.TO_DATETIME) AND r.vlicense = v.vlicense )";
+                $result = $result . "NOT EXISTS ( SELECT  * FROM rentals rent, reservations resv WHERE (" . $from_date . ", " . $to_date . ") OVERLAPS (resv.FROM_DATETIME, resv.TO_DATETIME) AND rent.vlicense = v.vlicense AND resv.conf_no = rent.conf_no )";
             } else if ($requestObject['FROM_TIME'] || $requestObject['TO_DATE'] || $requestObject['TO_TIME']) {
                 return false;
             } 
