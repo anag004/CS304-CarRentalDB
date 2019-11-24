@@ -114,9 +114,39 @@
                 $tableHeader = array("VTNAME", "MAKE", "MODEL", "YEAR", "COLOR", "VLICENSE");
                 echo ProjectUtils::getResultInTable($result, $tableHeader)[1];
             } else if ($_GET['report_type'] == 'total_returns') {
+                $date_format = "'YYYY-MM-DD'";
+                $date_value = $_GET['date'];
 
+                // Assemble the SQL query
+                $queryString = "SELECT v.location, v.vtname, v.make, v.model, v.year, v.color, v.vlicense FROM vehicles v, rentals rent, returns ret ";
+                $queryString .= " WHERE rent.vlicense = v.vlicense AND rent.rid = ret.rid ";
+                $queryString .= " AND to_date('$date_value', $date_format) = ret.return_date";
+                $queryString .= " ORDER BY v.location, v.vtname";
+
+                // Query the database
+                $result = $db->executePlainSQL($queryString);
+                
+                // Print the result in a table
+                $tableHeader = array("LOCATION", "VTNAME", "MAKE", "MODEL", "YEAR", "COLOR", "VLICENSE");
+                echo ProjectUtils::getResultInTable($result, $tableHeader)[1];
             } else if ($_GET['report_type'] == 'branch_returns') {
+                $date_format = "'YYYY-MM-DD'";
+                $date_value = $_GET['date'];
+                $location = $_GET['LOCATION'];
 
+                // Assemble the SQL query
+                $queryString = "SELECT v.vtname, v.make, v.model, v.year, v.color, v.vlicense FROM vehicles v, rentals rent, returns ret ";
+                $queryString .= " WHERE rent.vlicense = v.vlicense AND rent.rid = ret.rid ";
+                $queryString .= " AND to_date('$date_value', $date_format) = ret.return_date";
+                $queryString .= " AND v.location = '$location'";
+                $queryString .= " ORDER BY v.vtname";
+
+                // Query the database
+                $result = $db->executePlainSQL($queryString);
+                
+                // Print the result in a table
+                $tableHeader = array("VTNAME", "MAKE", "MODEL", "YEAR", "COLOR", "VLICENSE");
+                echo ProjectUtils::getResultInTable($result, $tableHeader)[1];
             }
         }
     ?>
