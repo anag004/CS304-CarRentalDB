@@ -49,6 +49,20 @@
             return $counter;
         }
 
+        // Makes a reservation with the supplied information
+        public static function makeReservation($requestObject, $db_conn) {
+            $fromDate = ProjectUtils::constructDate($requestObject['FROM_DATE'], $requestObject['FROM_TIME']);
+            $toDate = ProjectUtils::constructDate($requestObject['TO_DATE'], $requestObject['TO_TIME']);
+            
+            $insertDetails = "'" . $requestObject['VTNAME'] . "'" . ", " . $requestObject['DLICENSE'] . ", " . $fromDate . ", " . $toDate;
+            $confNo = hash('ripemd160', $insertDetails);
+            
+            $result = $db_conn->executePlainSQL("INSERT INTO reservations VALUES (" . "'" . $confNo . "'" . ", " . $insertDetails . ")");
+            $db_conn->commit();
+
+            return $confNo;
+        }
+
         // Returns an SQL command for the appropriate vehicle
         public static function getVehicleQueryString($requestObject) {
             $result = "";

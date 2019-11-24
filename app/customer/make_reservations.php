@@ -83,17 +83,8 @@
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             if (existVehicles()) {
                 if (existCustomer()) {
-                    // Add the reservation into the database
-                    $fromDate = ProjectUtils::constructDate($_POST['FROM_DATE'], $_POST['FROM_TIME']);
-                    $toDate = ProjectUtils::constructDate($_POST['TO_DATE'], $_POST['TO_TIME']);
-
-                    // The details to be inserted in order
-                    $insertDetails = "'" . $_POST['VTNAME'] . "'" . ", " . $_POST['DLICENSE'] . ", " . $fromDate . ", " . $toDate;
-                    $confNo = hash('ripemd160', $insertDetails);
-
-                    // Insert the details into the reservation table.
-                    $result = $db->executePlainSQL("INSERT INTO reservations VALUES (" . "'" . $confNo . "'" . ", " . $insertDetails . ")");
-                    $db->commit();
+                    // Add the reservation into the database using a utils function
+                    $confNo = ProjectUtils::makeReservation($_POST, $db);
 
                     // Redirect to the view_reservations page
                     header("Location: view_reservation.php?CONF_NO=" . $confNo);
