@@ -150,10 +150,17 @@
             // echo $result;
             return $result;
         }
-        public static function getErrorBox($text){
-            return '<div class="alert alert-danger alert-dismissible">
-            <button type="button" class="close" data-dismiss="alert">&times;</button>
-            <strong>ERROR: </strong>'.$text.'</div>';
+        public static function getErrorBox($text,$color="red"){
+            if($color =="red"){
+                return '<div class="alert alert-danger alert-dismissible">
+                <button type="button" class="close" data-dismiss="alert">&times;</button>
+                <strong>ERROR: </strong>'.$text.'</div>';
+            }
+            if($color == "blue"){
+                return '<div class="alert alert-info alert-dismissible">
+                <button type="button" class="close" data-dismiss="alert">&times;</button>
+                <strong>INFO: </strong>'.$text.'</div>';
+            }
         }
 
     }

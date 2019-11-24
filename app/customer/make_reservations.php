@@ -46,6 +46,11 @@
                             echo ProjectUtils::getErrorBox("No vehicles exist.");
                         }
                     }
+                    else{
+                        if(isset($_GET['STATUS'])){
+                            echo ProjectUtils::getErrorBox("Account registered successfully.","blue");
+                        }
+                    }
 
                     // Checks if there exists some customer with the given dlicense
                     function existCustomer() {
