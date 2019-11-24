@@ -32,7 +32,7 @@
                         </div>
                         <div class="form-group">
                             <label>Cellphone Number: </label>
-                            <input type="tel" name="cellphone" pattern="[0-9]{3}-[0-9]{2}-[0-9]{3}" class="form-control">
+                            <input type="tel" name="cellphone" pattern="[0-9]*" class="form-control">
                         </div>
                         <div class="form-group">
                             <label>Driver's Licence Number:</label> 
@@ -45,7 +45,7 @@
                     </form>
                 </div>
                 <div class="card-footer">
-                    Hello
+                     
                 </div>
             </div>
         </div>

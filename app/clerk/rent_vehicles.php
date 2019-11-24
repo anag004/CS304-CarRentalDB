@@ -30,6 +30,7 @@
                 $(".res").hide();
             }
 
+            set_res();
             $('.res-toggle').click(function(){
                 set_res();
             });
