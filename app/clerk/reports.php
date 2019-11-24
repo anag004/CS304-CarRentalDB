@@ -95,7 +95,24 @@
                 $tableHeader = array("LOCATION", "VTNAME", "MAKE", "MODEL", "YEAR", "COLOR", "VLICENSE");
                 echo ProjectUtils::getResultInTable($result, $tableHeader)[1];
             } else if ($_GET['report_type'] == 'branch_rentals') {
+                // Get the two dates set up
+                $date_format = "'YYYY-MM-DD:HH:MIam'";
+                $start_date = "'" . $_GET['date'] . ":12:00AM'";
+                $end_date = "'" . $_GET['date'] . ":11:59PM'";
 
+                // Assemble the SQL query
+                $queryString = "SELECT v.vtname, v.make, v.model, v.year, v.color, v.vlicense FROM vehicles v, rentals rent, reservations res ";
+                $queryString .= " WHERE rent.vlicense = v.vlicense AND rent.conf_no = res.conf_no ";
+                $queryString .= " AND to_date($start_date, $date_format) <= res.from_datetime ";
+                $queryString .= " AND to_date($end_date, $date_format) >= res.from_datetime ";
+                $queryString .= " ORDER BY v.vtname";
+
+                // Query the database
+                $result = $db->executePlainSQL($queryString);
+                
+                // Print the result in a table
+                $tableHeader = array("VTNAME", "MAKE", "MODEL", "YEAR", "COLOR", "VLICENSE");
+                echo ProjectUtils::getResultInTable($result, $tableHeader)[1];
             } else if ($_GET['report_type'] == 'total_returns') {
 
             } else if ($_GET['report_type'] == 'branch_returns') {
