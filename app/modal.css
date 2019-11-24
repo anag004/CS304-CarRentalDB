@@ -1,0 +1,20 @@
+.modal-dialog { 
+    max-width: 100%; 
+    width: auto !important; 
+    display: inline-block; 
+        overflow: scroll;
+
+}
+.modal-content { 
+    /* max-width: 100%;  */
+    width: auto !important; 
+    display: inline-block; 
+        /* overflow: scroll; */
+
+}
+
+
+.modal{
+    text-align: center;
+    /* overflow: scroll; */
+}

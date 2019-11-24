@@ -3,6 +3,7 @@
     <title>View Vehicles</title>
     <!-- Latest compiled and minified CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../modal.css">
 
     <!-- jQuery library -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
@@ -70,13 +71,18 @@
                 </div>
                 <div class="card-footer">
                 <?php
+                    $queryString=false;
+                    $out=array('','');
                     if ($_GET['FETCH_DATA'] == "true") {
                         $queryString = "SELECT * FROM vehicles v" . ProjectUtils::getVehicleQueryString($_GET);
                         if (!$queryString) {
                             echo ProjectUtils::getErrorBox("Invalid request for vehicle list");
                         } else {
                             $result = $db->executePlainSQL($queryString);
-                            echo ProjectUtils::printResultInTable($result, array("VLICENSE", "MAKE", "YEAR", "COLOR", "ODOMETER", "STATUS", "VTNAME", "LOCATION", "CITY")) . " vehicle(s)<br>";
+                            $out = ProjectUtils::getResultInTable($result, array('VLICENSE', 'MAKE', 'YEAR', 'COLOR', 'ODOMETER', 'STATUS', 'VTNAME', 'LOCATION', 'CITY'));
+                            echo '<button type="button" class="btn btn-info" data-toggle="modal" data-target="#myModal">
+                            Show Results
+                          </button><span class="pl-3">'.$out[0].' vehicle(s) found</span>';
                         }
                     }
                 ?>
@@ -85,5 +91,29 @@
         </div>
         <div class="col-md-2"></div>
     </div>
+
+<?php 
+    if ($queryString){
+        echo "
+            <div class='modal' id='myModal'>
+            <div class='modal-dialog'>
+                <div class='modal-content'>
+                <div class='modal-header'>
+                    <h4 class='modal-title'><strong>Available Vehicles</strong></h4>
+                    <button type='button' class='close' data-dismiss='modal'>&times;</button>
+                </div>
+                <div class='modal-body'>";
+        echo  $out[1];
+        echo "</div>
+        <div class='modal-footer'>
+            <button type='button' class='btn btn-info' data-dismiss='modal'>Close</button>
+        </div>
+
+        </div>
+    </div>
+    </div>
+";
+    }
+ ?>
 </body>
 </html> 
