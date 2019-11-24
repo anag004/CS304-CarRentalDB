@@ -23,7 +23,7 @@
                 <div class="card-header">
                 <h3 class="mb-0">
                         Make Reservations 
-                        <div class="float-right btn btn-info" onclick="window.location.href='../home.php';">
+                        <div class="float-right btn btn-info btn-sm" onclick="window.location.href='../home.php';">
                             Home
                         </div>
                     </h3>
@@ -67,8 +67,8 @@
                             <label>Driver's License Number:</label> 
                             <input type='tel' name="DLICENSE" pattern="[0-9]*" class="form-control" required="true" default="1'">
                         </div>
-                        <input type='submit' value="Make Reservation" class="btn btn-info">
-                        <input type='button' onclick="window.location.href='./make_reservations.php'" value="Reset" class="btn btn-info">
+                        <input type='submit' value="Make Reservation" class="btn btn-info btn-sm">
+                        <input type='button' onclick="window.location.href='./make_reservations.php'" value="Reset" class="btn btn-info btn-sm">
                     </form> 
                 </div>
                 <div class="card-footer">

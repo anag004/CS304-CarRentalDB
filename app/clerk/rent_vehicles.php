@@ -12,6 +12,32 @@
 
     <!-- Latest compiled JavaScript -->
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script> 
+    <script>
+        $(document).ready(function(){
+            function hide_inputs(x){
+                console.log("asd");
+                $(x).attr('value', '');
+                // $(x).hide();
+            }
+            function set_res(){
+                $(".res").show();
+                $(".no-res").find("input").val('');
+                $(".no-res").hide();
+            }
+            function set_no_res(){
+                $(".no-res").show();
+                $(".res").find("input").val('');
+                $(".res").hide();
+            }
+
+            $('.res-toggle').click(function(){
+                set_res();
+            });
+            $('.no-res-toggle').click(function(){
+                set_no_res();
+            });
+        });
+    </script> 
 
     <link href="https://fonts.googleapis.com/css?family=Roboto+Slab&display=swap" rel="stylesheet">
 </head>
@@ -23,7 +49,7 @@
                 <div class="card-header">
                 <h3 class="mb-0">
                         Rent Vehicles 
-                        <div class="float-right btn btn-info" onclick="window.location.href='../home.php';">
+                        <div class="float-right btn btn-info btn-sm" onclick="window.location.href='../home.php';">
                             Home
                         </div>
                     </h3>
@@ -104,18 +130,26 @@
                         ?>
                     <form method="post">
                         <input type = "hidden" name="FETCH_DATA" value="true">
-                        <div class="form-group">
+                        <div class="btn-group btn-group-toggle mb-3" data-toggle="buttons">
+                            <label class="btn btn-info active res-toggle">
+                                <input type="radio" name="options" checked value="res"> Reserved
+                            </label>
+                            <label class="btn btn-info no-res-toggle">
+                                <input type="radio" name="options" value="no-res"> Unreserved
+                            </label>
+                        </div>
+                        <div class="form-group res">
                             <label>Confirmation Number</label>
                             <input type="text" name="CONF_NO" pattern="[0-9]*" class="form-control">
                         </div>
-                        <div class="form-group">
+                        <div class="form-group no-res">
                             <label>Car Type:</label> 
                             <?php 
                                 $result = $db->executePlainSQL("SELECT * FROM vehicle_types");
                                 echo ProjectUtils::getDropdownString($result,"VTNAME","form-control");
                             ?>
                         </div>
-                        <div class="form-group">
+                        <div class="form-group no-res">
                             <label>Location:</label> 
                             
                             <?php 
@@ -124,19 +158,19 @@
                             ?>
                         </div>
                         
-                        <div class="form-group">
+                        <div class="form-group no-res">
                             <label>From:</label> 
                             
                             <input type='date' name="FROM_DATE" class="form-control">
                             <input type='time' name="FROM_TIME" class="form-control">
                         </div>
-                        <div class="form-group">        
+                        <div class="form-group no-res">        
                             <label>To: </label>
                             
                             <input type='date' name="TO_DATE" class="form-control">
                             <input type='time' name="TO_TIME" class="form-control">
                         </div>
-                        <div class="form-group">
+                        <div class="form-group no-res">
                             <label>Driver's License Number:</label> 
                             <input type='tel' name="DLICENSE" pattern="[0-9]*" class="form-control">
                         </div>
@@ -152,8 +186,8 @@
                             <label>Card Expiry Date:</label>
                             <input type='date' name="EXP_DATE" class="form-control">
                         </div>
-                        <input type='submit' value="Rent Vehicle" class="btn btn-info">
-                        <input type='button' onclick="window.location.href='./rent_vehicles.php'" value="Reset" class="btn btn-info">
+                        <input type='submit' value="Rent Vehicle" class="btn btn-info btn-sm">
+                        <input type='button' onclick="window.location.href='./rent_vehicles.php'" value="Reset" class="btn btn-info btn-sm">
                     </form> 
                 </div>
                 <div class="card-footer">

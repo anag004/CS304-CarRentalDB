@@ -15,7 +15,7 @@
                 <div class="card-header">
                 <h3 class="mb-0">
                         Create New Account 
-                        <div class="float-right btn btn-info" onclick="window.location.href='../home.php';">
+                        <div class="float-right btn btn-info btn-sm" onclick="window.location.href='../home.php';">
                             Home
                         </div>
                     </h3>
@@ -39,8 +39,8 @@
                             <input type='tel' name="dlicense" class="form-control">
                         </div>
                         <div class="form-group">                        
-                            <input type='submit' value="Create New Account" class = "btn btn-info">
-                            <input type='reset' value="Reset" class = "btn btn-info">
+                            <input type='submit' value="Create New Account" class = "btn btn-info btn-sm">
+                            <input type='reset' value="Reset" class = "btn btn-info btn-sm">
                         </div>
                     </form>
                 </div>

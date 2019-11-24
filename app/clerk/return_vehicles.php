@@ -23,7 +23,7 @@
                 <div class="card-header">
                     <h3 class="mb-0">
                         Return Vehicles 
-                        <div class="float-right btn btn-info" onclick="window.location.href='../home.php';">
+                        <div class="float-right btn btn-info btn-sm" onclick="window.location.href='../home.php';">
                             Home
                         </div>
                     </h3>
@@ -49,8 +49,8 @@
                             <label class="form-check-label">Fuel Tank Full</label>
                         </div>
                         <br>
-                        <input type='submit' value="Return Vehicle" class="btn btn-info">
-                        <input type='button' onclick="window.location.href='./return_vehicles.php'" value="Reset" class="btn btn-info">
+                        <input type='submit' value="Return Vehicle" class="btn btn-info btn-sm">
+                        <input type='button' onclick="window.location.href='./return_vehicles.php'" value="Reset" class="btn btn-info btn-sm">
                     </form> 
                 </div>
                 <div class="card-footer">

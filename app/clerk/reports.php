@@ -23,7 +23,7 @@
                 <div class="card-header">
                 <h3 class="mb-0">
                         View Reports 
-                        <div class="float-right btn btn-info" onclick="window.location.href='../home.php';">
+                        <div class="float-right btn btn-info btn-sm" onclick="window.location.href='../home.php';">
                             Home
                         </div>
                     </h3>
@@ -36,8 +36,8 @@
                             <select name="report_type" class="form-control">
                                 <option value="total_rentals">Total Rentals</option>
                                 <option value="branch_rentals">Branch Rentals</option>
-                                <option value="total_reservations">Total Reservations</option>
-                                <option value="branch_reservations">Branch Reservations</option>
+                                <option value="total_returns">Total Returns</option>
+                                <option value="branch_returns">Branch Returns</option>
                             </select>
                         </div>
                         <div class="form-group">
@@ -58,8 +58,8 @@
                             
                             <input type='date' name="date" class="form-control">
                         </div>
-                        <input type='submit' value="Generate Report" class="btn btn-info">
-                        <input type='button' onclick="window.location.href='./reports.php'" value="Reset" class="btn btn-info">
+                        <input type='submit' value="Generate Report" class="btn btn-info btn-sm">
+                        <input type='button' onclick="window.location.href='./reports.php'" value="Reset" class="btn btn-info btn-sm">
                     </form> 
                 </div>
                 <div class="card-footer">

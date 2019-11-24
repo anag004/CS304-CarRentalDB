@@ -29,15 +29,15 @@
                     <form>
                       <div class="form-group">
                             <label>Customer Actions:</label> 
-                            <input type="button" onclick="window.location.href='customer/view_vehicles.php';" class="btn btn-info form-control mb-1" value="View Vehicles">
-                            <input type="button" onclick="window.location.href='customer/make_reservations.php';" class="btn btn-info form-control mb-1" value="Make Reservations">
+                            <input type="button" onclick="window.location.href='customer/view_vehicles.php';" class="btn btn-info btn-sm form-control mb-1" value="View Vehicles">
+                            <input type="button" onclick="window.location.href='customer/make_reservations.php';" class="btn btn-info btn-sm form-control mb-1" value="Make Reservations">
 
                         </div>
                         <div class="form-group">
                             <label>Clerk Actions:</label> 
-                            <input type="button" onclick="window.location.href='clerk/rent_vehicles.php';" class="btn btn-info form-control mb-1" value="Rent Vehicles">
-                            <input type="button" onclick="window.location.href='clerk/return_vehicles.php';" class="btn btn-info form-control mb-1" value="Return Vehicles">
-                            <input type="button" onclick="window.location.href='clerk/reports.php';" class="btn btn-info form-control mb-1" value="Reports">
+                            <input type="button" onclick="window.location.href='clerk/rent_vehicles.php';" class="btn btn-info btn-sm form-control mb-1" value="Rent Vehicles">
+                            <input type="button" onclick="window.location.href='clerk/return_vehicles.php';" class="btn btn-info btn-sm form-control mb-1" value="Return Vehicles">
+                            <input type="button" onclick="window.location.href='clerk/reports.php';" class="btn btn-info btn-sm form-control mb-1" value="Reports">
                         </div>
                     </form>
                 </div>
