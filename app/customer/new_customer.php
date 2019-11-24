@@ -73,7 +73,7 @@
             $db->commit();
 
             // Redirect to success page
-            header("Location: make_reservation.php?STATUS=Registered!");
+            header("Location: make_reservations.php?STATUS=registered&DLICENSE=".$_POST['DLICENSE']);
         }
     ?>
 </body>
