@@ -30,6 +30,10 @@
                 </div>
                 <div class="card-body">
                 <?php
+                    require "../Database.php";
+                    require "../ProjectUtils.php";
+                    $db = new Database();
+                    $db->connect();
                     // Check if the USER has made a POST request
                     if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                         if (existVehicles()) {
@@ -47,8 +51,8 @@
                         }
                     }
                     else{
-                        if(isset($_GET['STATUS'])){
-                            echo ProjectUtils::getErrorBox("Account registered successfully.","blue");
+                        if(isset($_GET['STATUS']) and isset($_GET['DLICENSE'])){
+                            echo ProjectUtils::getErrorBox("Account with license number ".$_GET['DLICENSE']." registered successfully.","blue");
                         }
                     }
 
@@ -70,8 +74,8 @@
 
                     // Returns true iff there exist some vehicles 
                     function existVehicles() {
-                        global $db; 
-
+                        
+                        global $db;
                         $queryString = "SELECT COUNT(*) FROM vehicles v" . ProjectUtils::getVehicleQueryString($_POST);
                         $result = $db->executePlainSQL($queryString);
 
@@ -92,10 +96,6 @@
                         <div class="form-group">
                             <label>Car Type:</label> 
                             <?php 
-                                require "../Database.php";
-                                require "../ProjectUtils.php";
-                                $db = new Database();
-                                $db->connect();
                                 $result = $db->executePlainSQL("SELECT * FROM vehicle_types");
                                 echo ProjectUtils::getDropdownString($result,"VTNAME","form-control");
                             ?>
