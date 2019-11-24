@@ -81,13 +81,8 @@
     <?php
         // Check if the USER has made a POST request
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-            echo "POSTING...<br>";
-
             if (existVehicles()) {
-                echo "VEHICLES EXIST...<br>";
                 if (existCustomer()) {
-                    echo "EVERYTHING ALRIGHT...<br>";
-
                     // Add the reservation into the database
                     $fromDate = ProjectUtils::constructDate($_POST['FROM_DATE'], $_POST['FROM_TIME']);
                     $toDate = ProjectUtils::constructDate($_POST['TO_DATE'], $_POST['TO_TIME']);
@@ -96,14 +91,9 @@
                     $insertDetails = "'" . $_POST['VTNAME'] . "'" . ", " . $_POST['DLICENSE'] . ", " . $fromDate . ", " . $toDate;
                     $confNo = "'" . hash('ripemd160', $insertDetails) . "'";
 
-                    echo "CONFIRMATION NO: " . $confNo . "<br>";
-
-                    echo "COMMAND: " . "INSERT INTO reservations VALUES (" . $confNo . ", " . $insertDetails . ")" . "<br>";
-
                     // Insert the details into the reservation table.
                     $result = $db->executePlainSQL("INSERT INTO reservations VALUES (" . $confNo . ", " . $insertDetails . ")");
                     $db->commit();
-                    echo "MADE RESERVATION<br>";
                 } else {
                     echo "It seems you are not registered as a customer. Go to <a href='new_customer.php'>this</a> link to register.";
                 }
@@ -114,13 +104,9 @@
 
         // Checks if there exists some customer with the given dlicense
         function existCustomer() {
-            echo "CHECKING IF CUSTOMER EXISTS...<br>";
             global $db; 
             $result = $db->executePlainSQL("SELECT COUNT(*) FROM customers WHERE dlicense = " . $_POST['DLICENSE']);
-            echo "EXECUTED QUERY<br>";
-            var_dump($result);
             if (($row = oci_fetch_row($result)) != false) {
-                var_dump($row);
                 if ($row[0] == 0) {
                     return false;
                 } else {

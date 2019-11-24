@@ -51,7 +51,6 @@ class Database {
     }
 
     function commit() {
-        echo "DATA COMMITTED<br>";
         OCICommit($this->db_conn);
     }
  }
