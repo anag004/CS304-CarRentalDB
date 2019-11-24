@@ -151,13 +151,13 @@ Name					   Null?    Type
 
 */
 
-insert into reservations values ('1111', 'truck', 1, to_date('1998/05/31:12:00AM', 'yyyy/mm/dd:hh:miam'), to_date('1998/06/05:12:00AM', 'yyyy/mm/dd:hh:miam'));
+insert into reservations values ('1111', 'truck', 1, to_date('1998/05/31:12:00AM', 'yyyy/mm/dd:hh:miam'), to_date('1998/06/05:12:00AM', 'yyyy/mm/dd:hh:miam'), 'ubc');
 
-insert into reservations values ('2222', 'sedan', 2, to_date('1998/06/01:12:00AM', 'yyyy/mm/dd:hh:miam'), to_date('1998/06/06:12:00AM', 'yyyy/mm/dd:hh:miam'));
+insert into reservations values ('2222', 'sedan', 2, to_date('1998/06/01:12:00AM', 'yyyy/mm/dd:hh:miam'), to_date('1998/06/06:12:00AM', 'yyyy/mm/dd:hh:miam'), 'kitsilano');
 
-insert into reservations values ('3333', 'electric', 3, to_date('1998/06/08:12:00AM', 'yyyy/mm/dd:hh:miam'), to_date('1998/06/15:12:00AM', 'yyyy/mm/dd:hh:miam'));
+insert into reservations values ('3333', 'electric', 3, to_date('1998/06/08:12:00AM', 'yyyy/mm/dd:hh:miam'), to_date('1998/06/15:12:00AM', 'yyyy/mm/dd:hh:miam'), 'downtown');
 
-insert into reservations values ('4444', 'electric', 4, to_date('1998/06/17:12:00AM', 'yyyy/mm/dd:hh:miam'), to_date('1998/06/20:12:00AM', 'yyyy/mm/dd:hh:miam'));
+insert into reservations values ('4444', 'electric', 4, to_date('1998/06/17:12:00AM', 'yyyy/mm/dd:hh:miam'), to_date('1998/06/20:12:00AM', 'yyyy/mm/dd:hh:miam'), 'ubc');
 
 /* ======= rentals ========= 
 
