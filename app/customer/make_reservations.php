@@ -89,11 +89,14 @@
 
                     // The details to be inserted in order
                     $insertDetails = "'" . $_POST['VTNAME'] . "'" . ", " . $_POST['DLICENSE'] . ", " . $fromDate . ", " . $toDate;
-                    $confNo = "'" . hash('ripemd160', $insertDetails) . "'";
+                    $confNo = hash('ripemd160', $insertDetails);
 
                     // Insert the details into the reservation table.
-                    $result = $db->executePlainSQL("INSERT INTO reservations VALUES (" . $confNo . ", " . $insertDetails . ")");
+                    $result = $db->executePlainSQL("INSERT INTO reservations VALUES (" . "'" . $confNo . "'" . ", " . $insertDetails . ")");
                     $db->commit();
+
+                    // Redirect to the view_reservations page
+                    header("Location: view_reservation.php?CONF_NO=" . $confNo);
                 } else {
                     echo "It seems you are not registered as a customer. Go to <a href='new_customer.php'>this</a> link to register.";
                 }
