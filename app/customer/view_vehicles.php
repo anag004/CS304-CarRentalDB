@@ -17,8 +17,8 @@
 </head>
 <body style="font-family: 'Roboto Slab', serif; background-color: #008a9f; ">
     <div class = "row h-100">
-        <div class="col-2"></div>
-        <div class = "col-8 my-auto">
+        <div class="col-md-2"></div>
+        <div class = "col-md-8 my-auto">
             <div class="card rounded shadow shadow-sm">
                 <div class="card-header">
                 <h3 class="mb-0">
@@ -69,22 +69,21 @@
                     </form> 
                 </div>
                 <div class="card-footer">
-                    Hello
+                <?php
+                    if ($_GET['FETCH_DATA'] == "true") {
+                        $queryString = "SELECT * FROM vehicles v" . ProjectUtils::getVehicleQueryString($_GET);
+                        if (!$queryString) {
+                            echo ProjectUtils::getErrorBox("Invalid request for vehicle list");
+                        } else {
+                            $result = $db->executePlainSQL($queryString);
+                            echo ProjectUtils::printResultInTable($result, array("VLICENSE", "MAKE", "YEAR", "COLOR", "ODOMETER", "STATUS", "VTNAME", "LOCATION", "CITY")) . " vehicle(s)<br>";
+                        }
+                    }
+                ?>
                 </div>
             </div>
         </div>
-        <div class="col-2"></div>
+        <div class="col-md-2"></div>
     </div>
-    <?php
-        if ($_GET['FETCH_DATA'] == "true") {
-            $queryString = "SELECT * FROM vehicles v" . ProjectUtils::getVehicleQueryString($_GET);
-            if (!$queryString) {
-                echo "ERROR: Invalid request for vehicle list";
-            } else {
-                $result = $db->executePlainSQL($queryString);
-                echo "Found " . ProjectUtils::printResultInTable($result, array("VLICENSE", "MAKE", "YEAR", "COLOR", "ODOMETER", "STATUS", "VTNAME", "LOCATION", "CITY")) . " vehicle(s)<br>";
-            }
-        }
-    ?>
 </body>
 </html> 
