@@ -64,6 +64,7 @@ create table reservations (
 	dlicense integer,
 	from_datetime date,
 	to_datetime date,
+	location varchar(40),
 	primary key (conf_no),
 	foreign key (vtname) references vehicle_types(vtname),
 	foreign key (dlicense) references customers(dlicense),
