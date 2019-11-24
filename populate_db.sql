@@ -153,7 +153,7 @@ Name					   Null?    Type
 
 insert into reservations values ('1111', 'truck', 1, to_date('1998/05/31:12:00AM', 'yyyy/mm/dd:hh:miam'), to_date('1998/06/05:12:00AM', 'yyyy/mm/dd:hh:miam'), 'ubc');
 
-insert into reservations values ('2222', 'sedan', 2, to_date('1998/06/01:12:00AM', 'yyyy/mm/dd:hh:miam'), to_date('1998/06/06:12:00AM', 'yyyy/mm/dd:hh:miam'), 'kitsilano');
+insert into reservations values ('2222', 'sedan', 2, to_date('2019/06/01:12:00AM', 'yyyy/mm/dd:hh:miam'), to_date('2019/06/06:12:00AM', 'yyyy/mm/dd:hh:miam'), 'ubc');
 
 insert into reservations values ('3333', 'electric', 3, to_date('1998/06/08:12:00AM', 'yyyy/mm/dd:hh:miam'), to_date('1998/06/15:12:00AM', 'yyyy/mm/dd:hh:miam'), 'downtown');
 
@@ -193,13 +193,13 @@ Name					   Null?    Type
 
 */
 
-insert into rentals values ('1', 1, 1, 1000, 'Lorem Ipsum', 1234, to_date('2020/05/31', 'yyyy/mm/dd'), '1111');
+insert into rentals values ('1', 1,  1000, 'Lorem Ipsum', 1234, to_date('2020/05/31', 'yyyy/mm/dd'), '1111');
 
-insert into rentals values ('2', 2, 2, 1000, 'Lorem Ipsum 2', 1235, to_date('2021/05/31', 'yyyy/mm/dd'), '2222');
+insert into rentals values ('2', 2, 1000, 'Lorem Ipsum 2', 1235, to_date('2021/05/31', 'yyyy/mm/dd'), '2222');
 
-insert into rentals values ('3', 3, 3, 1000, 'Lorem Ipsum 3', 1236, to_date('2021/05/31', 'yyyy/mm/dd'), '3333');
+insert into rentals values ('3', 3, 1000, 'Lorem Ipsum 3', 1236, to_date('2021/05/31', 'yyyy/mm/dd'), '3333');
 
-insert into rentals values ('4', 4, 4, 1000, 'Lorem Ipsum 4', 1237, to_date('2021/05/31', 'yyyy/mm/dd'), '4444');
+insert into rentals values ('4',  4, 1000, 'Lorem Ipsum 4', 1237, to_date('2021/05/31', 'yyyy/mm/dd'), '4444');
 
 /* ========= returns ============ 
 

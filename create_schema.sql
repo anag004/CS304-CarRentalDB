@@ -76,8 +76,7 @@ create table reservations (
 
 create table rentals (
 	rid varchar(40),
-	vlicense integer, 
-	dlicense integer,
+	vlicense integer,
 	odometer integer,
 	card_name varchar(40),
 	card_no integer,
@@ -85,8 +84,7 @@ create table rentals (
 	conf_no varchar(40),
 	primary key (rid),
 	foreign key (conf_no) references reservations(conf_no),
-	foreign key (vlicense) references vehicles(vlicense),
-	foreign key (dlicense) references customers(dlicense)
+	foreign key (vlicense) references vehicles(vlicense)
 );
 
 /* The RETURNS table */
