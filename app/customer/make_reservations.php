@@ -23,12 +23,65 @@
                 <div class="card-header">
                 <h3 class="mb-0">
                         Make Reservations 
-                        <div class="float-right btn btn-info" onclick="window.location.href='../home.php';">
+                        <div class="float-right btn btn-info btn-sm" onclick="window.location.href='../home.php';">
                             Home
                         </div>
                     </h3>
                 </div>
                 <div class="card-body">
+                <?php
+                    // Check if the USER has made a POST request
+                    if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+                        if (existVehicles()) {
+                            if (existCustomer()) {
+                                // Add the reservation into the database using a utils function
+                                $confNo = ProjectUtils::makeReservation($_POST, $db);
+
+                                // Redirect to the view_reservations page
+                                header("Location: view_reservation.php?CONF_NO=" . $confNo);
+                            } else {
+                                echo ProjectUtils::getErrorBox("It seems you are not registered as a customer. <a href='new_customer.php'>Register Here.</a>");
+                            }
+                        } else {
+                            echo ProjectUtils::getErrorBox("No vehicles exist.");
+                        }
+                    }
+
+                    // Checks if there exists some customer with the given dlicense
+                    function existCustomer() {
+                        global $db; 
+                        $result = $db->executePlainSQL("SELECT COUNT(*) FROM customers WHERE dlicense = " . $_POST['DLICENSE']);
+                        if (($row = oci_fetch_row($result)) != false) {
+                            if ($row[0] == 0) {
+                                return false;
+                            } else {
+                                return true;
+                            }
+                        } else {
+                            echo ProjectUtils::getErrorBox("DBError");
+                            return false;
+                        }
+                    }
+
+                    // Returns true iff there exist some vehicles 
+                    function existVehicles() {
+                        global $db; 
+
+                        $queryString = "SELECT COUNT(*) FROM vehicles v" . ProjectUtils::getVehicleQueryString($_POST);
+                        $result = $db->executePlainSQL($queryString);
+
+                        if (($row = oci_fetch_row($result)) != false) {
+                            if ($row[0] == 0) {
+                                return false;
+                            } else {
+                                return true;
+                            }
+                        } else {
+                            echo ProjectUtils::getErrorBox("DBError");
+                            return false;
+                        }
+                    }   
+                ?>
                     <form method="post">
                         <input type = "hidden" name="FETCH_DATA" value="true">
                         <div class="form-group">
@@ -67,69 +120,17 @@
                             <label>Driver's License Number:</label> 
                             <input type='tel' name="DLICENSE" pattern="[0-9]*" class="form-control" required="true" default="1'">
                         </div>
-                        <input type='submit' value="Make Reservation" class="btn btn-info">
-                        <input type='button' onclick="window.location.href='./make_reservations.php'" value="Reset" class="btn btn-info">
+                        <input type='submit' value="Make Reservation" class="btn btn-info btn-sm">
+                        <input type='button' onclick="window.location.href='./make_reservations.php'" value="Reset" class="btn btn-info btn-sm">
                     </form> 
                 </div>
                 <div class="card-footer">
-                    Hello
-                </div>
+                
+            </div>
             </div>
         </div>
         <div class="col-md-2"></div>
     </div>
-    <?php
-        // Check if the USER has made a POST request
-        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-            if (existVehicles()) {
-                if (existCustomer()) {
-                    // Add the reservation into the database using a utils function
-                    $confNo = ProjectUtils::makeReservation($_POST, $db);
-
-                    // Redirect to the view_reservations page
-                    header("Location: view_reservation.php?CONF_NO=" . $confNo);
-                } else {
-                    echo "It seems you are not registered as a customer. Go to <a href='new_customer.php'>this</a> link to register.";
-                }
-            } else {
-                echo "ERROR: No vehicles exist.<br>";
-            }
-        }
-
-        // Checks if there exists some customer with the given dlicense
-        function existCustomer() {
-            global $db; 
-            $result = $db->executePlainSQL("SELECT COUNT(*) FROM customers WHERE dlicense = " . $_POST['DLICENSE']);
-            if (($row = oci_fetch_row($result)) != false) {
-                if ($row[0] == 0) {
-                    return false;
-                } else {
-                    return true;
-                }
-            } else {
-                echo "DBError<br>";
-                return false;
-            }
-        }
-
-        // Returns true iff there exist some vehicles 
-        function existVehicles() {
-            global $db; 
-
-            $queryString = "SELECT COUNT(*) FROM vehicles v" . ProjectUtils::getVehicleQueryString($_POST);
-            $result = $db->executePlainSQL($queryString);
-
-            if (($row = oci_fetch_row($result)) != false) {
-                if ($row[0] == 0) {
-                    return false;
-                } else {
-                    return true;
-                }
-            } else {
-                echo "DBError<br>";
-                return false;
-            }
-        }   
-    ?>
+    
 </body>
 </html> 
