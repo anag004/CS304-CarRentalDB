@@ -66,7 +66,8 @@ create table reservations (
 	to_datetime date,
 	primary key (conf_no),
 	foreign key (vtname) references vehicle_types(vtname),
-	foreign key (dlicense) references customers(dlicense)
+	foreign key (dlicense) references customers(dlicense),
+	check ( from_datetime <= to_datetime )
 );
 
 /* The RENTALS table */
@@ -86,7 +87,8 @@ create table rentals (
 	primary key (rid),
 	foreign key (conf_no) references reservations(conf_no),
 	foreign key (vlicense) references vehicles(vlicense),
-	foreign key (dlicense) references customers(dlicense)
+	foreign key (dlicense) references customers(dlicense),
+	check ( from_datetime <= to_datetime )
 );
 
 /* The RETURNS table */
