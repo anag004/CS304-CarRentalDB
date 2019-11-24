@@ -192,6 +192,51 @@
                 // Print the result in a table
                 $tableHeader = array("LOCATION", "VTNAME", "MAKE", "MODEL", "YEAR", "COLOR", "VLICENSE");
                 echo ProjectUtils::getResultInTable($result, $tableHeader)[1];
+
+                // ============= Number and revenue by category =================
+
+                // Assemble the SQL query
+                $queryString = "SELECT v.vtname, SUM(ret.value) AS revenue, COUNT(*) AS count FROM vehicles v, rentals rent, returns ret ";
+                $queryString .= " WHERE rent.vlicense = v.vlicense AND rent.rid = ret.rid ";
+                $queryString .= " AND to_date('$date_value', $date_format) = ret.return_date";
+                $queryString .= " GROUP BY v.vtname";
+
+                // Query the database
+                $result = $db->executePlainSQL($queryString);
+                
+                // Print the result in a table
+                $tableHeader = array("VTNAME", "REVENUE", "COUNT");
+                echo "<h3>Revenue and number of vehicles returned for each vehicle type</h3>";
+                echo ProjectUtils::getResultInTable($result, $tableHeader)[1];
+
+                // ============= Number and revenue by branch =================
+                
+                // Assemble the SQL query
+                $queryString = "SELECT v.location, SUM(ret.value) AS revenue, COUNT(*) AS count FROM vehicles v, rentals rent, returns ret ";
+                $queryString .= " WHERE rent.vlicense = v.vlicense AND rent.rid = ret.rid ";
+                $queryString .= " AND to_date('$date_value', $date_format) = ret.return_date";
+                $queryString .= " GROUP BY v.location";
+
+                // Query the database
+                $result = $db->executePlainSQL($queryString);
+                
+                // Print the result in a table
+                $tableHeader = array("LOCATION", "REVENUE", "COUNT");
+                echo "<h3>Revenue and number of vehicles returned for each branch</h3>";
+                echo ProjectUtils::getResultInTable($result, $tableHeader)[1];
+
+                // ============= Grand total for the day =======================
+                
+                // Assemble the SQL query
+                $queryString = "SELECT SUM(ret.value) FROM vehicles v, rentals rent, returns ret ";
+                $queryString .= " WHERE rent.vlicense = v.vlicense AND rent.rid = ret.rid ";
+                $queryString .= " AND to_date('$date_value', $date_format) = ret.return_date";
+
+                // Query the database
+                $result = $db->executePlainSQL($queryString);
+                $total = oci_fetch_row($result)[0];
+                echo "<h3>Grand total for the day is $total CAD</h3><br>";
+
             } else if ($_GET['report_type'] == 'branch_returns') {
                 $date_format = "'YYYY-MM-DD'";
                 $date_value = $_GET['date'];
