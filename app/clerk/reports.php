@@ -70,9 +70,38 @@
         <div class="col-md-2"></div>
     </div>
     <?php
-        // Code to get the reports
+        // Check if data needs to be fetched
+        if ($_GET['FETCH_DATA'] == true) {
+            // Check the kind of report to be generated
+            if ($_GET['report_type'] == 'total_rentals') {
+                // Report for all branches grouped by vehicle category and branch
 
+                // Get the two dates set up
+                $date_format = "'YYYY-MM-DD:HH:MIam'";
+                $start_date = "'" . $_GET['date'] . ":12:00AM'";
+                $end_date = "'" . $_GET['date'] . ":11:59PM'";
 
+                // Assemble the SQL query
+                $queryString = "SELECT v.location, v.vtname, v.make, v.model, v.year, v.color, v.vlicense FROM vehicles v, rentals rent, reservations res ";
+                $queryString .= " WHERE rent.vlicense = v.vlicense AND rent.conf_no = res.conf_no ";
+                $queryString .= " AND to_date($start_date, $date_format) <= res.from_datetime ";
+                $queryString .= " AND to_date($end_date, $date_format) >= res.from_datetime ";
+                $queryString .= " ORDER BY v.location, v.vtname";
+
+                // Query the database
+                $result = $db->executePlainSQL($queryString);
+                
+                // Print the result in a table
+                $tableHeader = array("LOCATION", "VTNAME", "MAKE", "MODEL", "YEAR", "COLOR", "VLICENSE");
+                echo ProjectUtils::getResultInTable($result, $tableHeader)[1];
+            } else if ($_GET['report_type'] == 'branch_rentals') {
+
+            } else if ($_GET['report_type'] == 'total_returns') {
+
+            } else if ($_GET['report_type'] == 'branch_returns') {
+
+            }
+        }
     ?>
 </body>
 </html> 
