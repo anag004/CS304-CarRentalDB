@@ -76,6 +76,8 @@
             if ($_GET['report_type'] == 'total_rentals') {
                 // Report for all branches grouped by vehicle category and branch
 
+                // Details of all vehicles grouped by branch and type
+
                 // Get the two dates set up
                 $date_format = "'YYYY-MM-DD:HH:MIam'";
                 $start_date = "'" . $_GET['date'] . ":12:00AM'";
@@ -92,17 +94,57 @@
                 $result = $db->executePlainSQL($queryString);
                 
                 // Print the result in a table
+                echo "<h3>Vehicles rented by type and branch</h3><br>";
                 $tableHeader = array("LOCATION", "VTNAME", "MAKE", "MODEL", "YEAR", "COLOR", "VLICENSE");
+                $tableData = ProjectUtils::getResultInTable($result, $tableHeader);
+                $totalRentals = $tableData[0];
+                echo $tableData[1];
+
+                echo "<h3>$totalRentals new rental(s) for the whole company</h3><br>";
+
+                // Number of vehicles rented for each vehicle type
+
+                // Assemble the query
+                $queryString = "SELECT v.vtname, COUNT(*) AS COUNT FROM vehicles v, reservations res, rentals rent";
+                $queryString .= " WHERE rent.vlicense = v.vlicense AND rent.conf_no = res.conf_no";
+                $queryString .= " AND to_date($start_date, $date_format) <= res.from_datetime ";
+                $queryString .= " AND to_date($end_date, $date_format) >= res.from_datetime ";
+                $queryString .= " GROUP BY v.vtname";
+
+                // Query the database
+                $result = $db->executePlainSQL($queryString);
+                
+                // Print the result in a table
+                echo "<h3>Number of vehicles of each type rented across all branches</h3><br>";
+                $tableHeader = array("VTNAME", "COUNT");
+                echo ProjectUtils::getResultInTable($result, $tableHeader)[1];
+
+                // Number of rentals at each branch
+                // Assemble the query
+                $queryString = "SELECT v.location, COUNT(*) AS COUNT FROM vehicles v, reservations res, rentals rent";
+                $queryString .= " WHERE rent.vlicense = v.vlicense AND rent.conf_no = res.conf_no";
+                $queryString .= " AND to_date($start_date, $date_format) <= res.from_datetime ";
+                $queryString .= " AND to_date($end_date, $date_format) >= res.from_datetime ";
+                $queryString .= " GROUP BY v.location";
+
+                // Query the database
+                $result = $db->executePlainSQL($queryString);
+                
+                // Print the result in a table
+                echo "<h3>Number of vehicles of each type rented across all branches</h3><br>";
+                $tableHeader = array("LOCATION", "COUNT");
                 echo ProjectUtils::getResultInTable($result, $tableHeader)[1];
             } else if ($_GET['report_type'] == 'branch_rentals') {
                 // Get the two dates set up
                 $date_format = "'YYYY-MM-DD:HH:MIam'";
                 $start_date = "'" . $_GET['date'] . ":12:00AM'";
                 $end_date = "'" . $_GET['date'] . ":11:59PM'";
+                $location = $_GET['LOCATION'];
 
                 // Assemble the SQL query
                 $queryString = "SELECT v.vtname, v.make, v.model, v.year, v.color, v.vlicense FROM vehicles v, rentals rent, reservations res ";
                 $queryString .= " WHERE rent.vlicense = v.vlicense AND rent.conf_no = res.conf_no ";
+                $queryString .= " AND v.location  = '$location'";
                 $queryString .= " AND to_date($start_date, $date_format) <= res.from_datetime ";
                 $queryString .= " AND to_date($end_date, $date_format) >= res.from_datetime ";
                 $queryString .= " ORDER BY v.vtname";
@@ -112,7 +154,28 @@
                 
                 // Print the result in a table
                 $tableHeader = array("VTNAME", "MAKE", "MODEL", "YEAR", "COLOR", "VLICENSE");
-                echo ProjectUtils::getResultInTable($result, $tableHeader)[1];
+                $tableData = ProjectUtils::getResultInTable($result, $tableHeader);
+                echo $tableData[1];
+
+                echo "<h3>Total $tableData[0] new vehicles rented at this branch</h3>";
+
+                // Number of vehicles rented for each vehicle type
+
+                // Assemble the query
+                $queryString = "SELECT v.vtname, COUNT(*) AS COUNT FROM vehicles v, reservations res, rentals rent";
+                $queryString .= " WHERE rent.vlicense = v.vlicense AND rent.conf_no = res.conf_no";
+                $queryString .= " AND v.location  = '$location'";
+                $queryString .= " AND to_date($start_date, $date_format) <= res.from_datetime ";
+                $queryString .= " AND to_date($end_date, $date_format) >= res.from_datetime ";
+                $queryString .= " GROUP BY v.vtname";
+
+                // Query the database
+                $result = $db->executePlainSQL($queryString);
+                
+                // Print the result in a table
+                echo "<h3>Number of vehicles of each type rented at this branch</h3><br>";
+                $tableHeader = array("VTNAME", "COUNT");
+                echo ProjectUtils::getResultInTable($result, $tableHeader)[1];                
             } else if ($_GET['report_type'] == 'total_returns') {
                 $date_format = "'YYYY-MM-DD'";
                 $date_value = $_GET['date'];
