@@ -22,6 +22,7 @@
                     echo "<li>DRIVER'S LICENSE NUMBER: " . $row[2];
                     echo "<li>BEGIN DATE/TIME: " . $row[3];
                     echo "<li>END DATE/TIME: " . $row[4];
+                    echo "<li>LOCATION: " . $row[5];
                 echo "</ul>";
             } else {
                 echo "Invalid reservation conf_no<br>";

@@ -54,7 +54,7 @@
             $fromDate = ProjectUtils::constructDate($requestObject['FROM_DATE'], $requestObject['FROM_TIME']);
             $toDate = ProjectUtils::constructDate($requestObject['TO_DATE'], $requestObject['TO_TIME']);
             
-            $insertDetails = "'" . $requestObject['VTNAME'] . "'" . ", " . $requestObject['DLICENSE'] . ", " . $fromDate . ", " . $toDate;
+            $insertDetails = "'" . $requestObject['VTNAME'] . "'" . ", " . $requestObject['DLICENSE'] . ", " . $fromDate . ", " . $toDate . ", '" . $requestObject['LOCATION'] . "'";
             $confNo = hash('ripemd160', $insertDetails);
             
             $result = $db_conn->executePlainSQL("INSERT INTO reservations VALUES (" . "'" . $confNo . "'" . ", " . $insertDetails . ")");
@@ -64,8 +64,8 @@
         }
 
         // Checks if a reservation exists with the given data
-        public static function getReservation($confNo, $db_conn) {
-            $result = $db_conn->executePlainSQL("SELECT * FROM reservations WHERE conf_no = " . "'" . $confNo . "'");
+        public static function getReservation($confNo, $db_conn, $infoString) {
+            $result = $db_conn->executePlainSQL("SELECT " . $infoString . " FROM reservations WHERE conf_no = " . "'" . $confNo . "'");
 
             if (($row = oci_fetch_array($result)) != false) {
                 return $row;
