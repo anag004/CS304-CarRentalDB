@@ -19,7 +19,6 @@
 
             // Print this rental object
             if (($rental = oci_fetch_array($rentalResult)) != false && ($reservation = oci_fetch_array($reservationResult)) != false) {
-                var_dump($reservation);
                 echo "<ul>";
                     echo "<li>RENTAL ID: " . $rental['RID'];
                     echo "<li>VEHICLE LICENSE NO: " . $rental['VLICENSE'];

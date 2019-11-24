@@ -39,61 +39,66 @@
                             // Code for renting a vehicle   
                             // Check if a POST request is sent 
                             if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+                                // Declare necessary variables
+                                $reservation = false;
+                                $confNo = null;
+                                $datetime_format = "'YYYY-MM-DD:HH:MI'";
+
                                 // Check if the confirmation number is given 
-                                if ($_POST['CONF_NO'] == "") {
+                                if (!isset($_POST['CONF_NO']) || $_POST['CONF_NO'] == "") {
+                                    echo "CONF_NO NOT GIVEN<br>";
                                     // Look at the other data to make a reservation and link to the rental
+                                    $confNo = ProjectUtils::makeReservation($_POST, $db);
+
+                                    // Retrieve the reservation object and set variales
+                                    $reservation = ProjectUtils::getReservation($confNo, $db, "*");
                                 } else {
-                                    // Check if the reservation exists, if YES make the rental else throw error
-                                    $datetime_format = "'YYYY-MM-DD:HH:MI'";
+                                    // Find the reservation and set variables
                                     $reservation = ProjectUtils::getReservation($_POST['CONF_NO'], $db, "VTNAME, to_char(FROM_DATETIME, " . $datetime_format . ") AS FROM_DATETIME, to_char(TO_DATETIME, " . $datetime_format . ") AS TO_DATETIME, VTNAME, LOCATION");
-                                    if ($reservation) {
-                                        echo "FOUND RESERVATION<br>";
-                                        var_dump($reservation);
-                                        echo $reservation['VTNAME'] . "<br>";
-                                        // Make a new rental and link it with the reservatios
-                    
-                                        // Find a vehicle with the given type and license between the given dates
-                                        $queryString = "SELECT * FROM vehicles v WHERE NOT EXISTS ( ";
-                                        $queryString .= "SELECT * FROM rentals rent, reservations resv WHERE ";
-                                        $queryString .= "(to_date('" . $reservation['FROM_DATETIME'] . "', " . $datetime_format . "), to_date('" . $reservation['TO_DATETIME'] . "', " . $datetime_format . ")) ";
-                                        $queryString .= "OVERLAPS (resv.FROM_DATETIME, resv.TO_DATETIME) ";
-                                        $queryString .= " AND resv.conf_no = rent.conf_no AND rent.vlicense = v.vlicense )";
-                                        $queryString .= " AND vtname = '" . $reservation['VTNAME'] . "'";
-                                        $queryString .= " AND location = '" . $reservation['LOCATION'] . "'";
-                            
-                                        echo $queryString . "<br>";
-                                        $result = $db->executePlainSQL($queryString);
+                                    $confNo = $_POST['CONF_NO'];
+                                }
 
-                                        var_dump($result);
+                                var_dump($reservation);
 
-                                        // Check if a vehicle exists in this duration
-                                        if (($vehicle = oci_fetch_array($result)) != false) {
-                                            // Create the rental with the details
-                                            $vlicense = $vehicle['VLICENSE'];
-                                            $odometer = $vehicle['ODOMETER'];       
-                                            $card_name = $_POST['CARD_NAME'];
-                                            $card_no = $_POST['CARD_NO'];
-                                            $date_format = "YYYY-MM-DD";
-                                            $exp_date = "to_date('" . $_POST['EXP_DATE'] . "', '" . $date_format . "')";
-                                            $confNo = $_POST['CONF_NO'];
-                                            $rid = hash('ripemd160', $dlicense . $to_datetime . $from_datetime . $vlicense);
+                                if ($reservation) {
+                                    // Find a vehicle with the given type and license between the given dates
+                                    $queryString = "SELECT * FROM vehicles v WHERE NOT EXISTS ( ";
+                                    $queryString .= "SELECT * FROM rentals rent, reservations resv WHERE ";
+                                    $queryString .= "(to_date('" . $reservation['FROM_DATETIME'] . "', " . $datetime_format . "), to_date('" . $reservation['TO_DATETIME'] . "', " . $datetime_format . ")) ";
+                                    $queryString .= "OVERLAPS (resv.FROM_DATETIME, resv.TO_DATETIME) ";
+                                    $queryString .= " AND resv.conf_no = rent.conf_no AND rent.vlicense = v.vlicense )";
+                                    $queryString .= " AND vtname = '" . $reservation['VTNAME'] . "'";
+                                    $queryString .= " AND location = '" . $reservation['LOCATION'] . "'";
 
-                                            echo "DLICENSE: " . $dlicense . "<br>";
+                                    $result = $db->executePlainSQL($queryString);
 
-                                            // Create the rental
-                                            $queryString = "INSERT INTO rentals VALUES('" . $rid . "', " . $vlicense . ", " . $odometer . ", '" . $card_name . "', " . $card_no . ", " . $exp_date . ", '" . $confNo . "')";
-                                            $db->executePlainSQL($queryString);
-                                            $db->commit();
+                                    // Check if a vehicle exists in this duration
+                                    if (($vehicle = oci_fetch_array($result)) != false) {
 
-                                            // Redirect to the view rentals page
-                                            header("Location: view_rentals.php?RID=" . $rid . "&CONF_NO=" . $confNo);
-                                        } else {
-                                            echo ProjectUtils::getErrorBox("No available cars.");
-                                        }
+                                        // Create the rental with the details
+                                        $vlicense = $vehicle['VLICENSE'];
+                                        $odometer = $vehicle['ODOMETER'];       
+                                        $card_name = $_POST['CARD_NAME'];
+                                        $card_no = $_POST['CARD_NO'];
+                                        $date_format = "YYYY-MM-DD";
+                                        $exp_date = "to_date('" . $_POST['EXP_DATE'] . "', '" . $date_format . "')";
+                                        $rid = hash('ripemd160', $dlicense . $to_datetime . $from_datetime . $vlicense);
 
+                                        echo "DLICENSE: " . $dlicense . "<br>";
+
+                                        // Create the rental
+                                        $queryString = "INSERT INTO rentals VALUES('" . $rid . "', " . $vlicense . ", " . $odometer . ", '" . $card_name . "', " . $card_no . ", " . $exp_date . ", '" . $confNo . "')";
+                                        $db->executePlainSQL($queryString);
+                                        $db->commit();
+
+                                        // Redirect to the view rentals page
+                                        header("Location: view_rentals.php?RID=" . $rid . "&CONF_NO=" . $confNo);
                                     } else {
-                                        echo ProjectUtils::getErrorBox("Invalid confirmation number");
+                                        echo ProjectUtils::getErrorBox("No available cars.");
                                     }
+
+                                } else {
+                                    echo ProjectUtils::getErrorBox("Invalid confirmation number");
                                 }
                             }
                         ?>
