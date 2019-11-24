@@ -21,15 +21,15 @@
             return "to_date(" . $date_string . ", "  . $date_format . ")";
         }
 
-        public static function getResultInTable($result, $arr) {
+        public static function getResultInTable($result, $arr, $class="") {
             // echo "DISPLAY CALLED <br>";
             $counter = 0;
             $arr_len = count($arr);
         
-            $out= "<table class='table table-sm table-hover'>";
+            $out= "<table class='table table-sm table-hover ".$class."'>";
 
             $out.= "<thead class='thead-light'><tr>";
-            $out.= "<th >" . "SNO" . "</th>";
+            $out.= "<th>" . "SNO" . "</th>";
             for($i = 0; $i < $arr_len; $i++) {
                 $out.= "<th>" . $arr[$i] . "</th>";
             }
