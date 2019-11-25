@@ -24,19 +24,19 @@
                     <form method="post">
                         <div class="form-group">
                             <label> Name: </label>
-                            <input type='text' name='NAME' class="form-control" required="true" value="Lorem">
+                            <input type='text' name='NAME' class="form-control" required="true">
                         </div>
                         <div class="form-group">
                             <label>Address: </label>
-                            <input type='text' name='ADDRESS' class="form-control" required="true" value="Ipsum">
+                            <input type='text' name='ADDRESS' class="form-control" required="true">
                         </div>
                         <div class="form-group">
                             <label>Cellphone Number: </label>
-                            <input type="tel" name="CELLPHONE" pattern="[0-9]*" class="form-control" required="true" value="123">
+                            <input type="tel" name="CELLPHONE" pattern="[0-9]*" class="form-control" required="true">
                         </div>
                         <div class="form-group">
                             <label>Driver's Licence Number:</label> 
-                            <input type='tel' name="DLICENSE" class="form-control" required="true" value="123">
+                            <input type='tel' name="DLICENSE" class="form-control" required="true">
                         </div>
                         <div class="form-group">                        
                             <input type='submit' value="Create New Account" class = "btn btn-info btn-sm">
