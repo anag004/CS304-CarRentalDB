@@ -79,7 +79,7 @@
                             echo ProjectUtils::getErrorBox("Invalid request for vehicle list");
                         } else {
                             $result = $db->executePlainSQL($queryString);
-                            $out = ProjectUtils::getResultInTable($result, array('VLICENSE', 'MAKE', 'YEAR', 'COLOR', 'ODOMETER', 'STATUS', 'VTNAME', 'LOCATION', 'CITY'));
+                            $out = ProjectUtils::getResultInTable($result, array('VLICENSE', 'MAKE', 'YEAR', 'COLOR', 'ODOMETER', 'VTNAME', 'LOCATION', 'CITY'));
                             echo '<button type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#myModal">
                             Show Results
                           </button><span class="pl-3">'.$out[0].' vehicle(s) found</span>';
