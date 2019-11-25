@@ -30,15 +30,29 @@
                     </h3>
                 </div>
                 <div class="card-body">
+                <?php
+                    require "../Database.php";
+                    require "../ProjectUtils.php";
+                    $db = new Database();
+                    $db->connect();
+                    $queryString=false;
+                    $out=array('','');
+                    $showButton=false;
+                    if ($_GET['FETCH_DATA'] == "true") {
+                        $whereString = ProjectUtils::getVehicleQueryString($_GET);
+                        $queryString = "SELECT * FROM vehicles v" . $whereString;
+                        if ($whereString) {
+                            $showButton=true;
+                            $result = $db->executePlainSQL($queryString);
+                            $out = ProjectUtils::getResultInTable($result, array('VLICENSE', 'MAKE', 'YEAR', 'COLOR', 'ODOMETER', 'VTNAME', 'LOCATION', 'CITY'));
+                        }
+                    }
+                ?>
                     <form method="get">
                         <input type = "hidden" name="FETCH_DATA" value="true">
                         <div class="form-group">
                             <label>Car Type:</label> 
                             <?php 
-                                require "../Database.php";
-                                require "../ProjectUtils.php";
-                                $db = new Database();
-                                $db->connect();
                                 $result = $db->executePlainSQL("SELECT * FROM vehicle_types");
                                 echo ProjectUtils::getDropdownString($result,"VTNAME","form-control");
                             ?>
@@ -71,19 +85,10 @@
                 </div>
                 <div class="card-footer">
                 <?php
-                    $queryString=false;
-                    $out=array('','');
-                    if ($_GET['FETCH_DATA'] == "true") {
-                        $queryString = "SELECT * FROM vehicles v" . ProjectUtils::getVehicleQueryString($_GET);
-                        if (!$queryString) {
-                            echo ProjectUtils::getErrorBox("Invalid request for vehicle list");
-                        } else {
-                            $result = $db->executePlainSQL($queryString);
-                            $out = ProjectUtils::getResultInTable($result, array('VLICENSE', 'MAKE', 'YEAR', 'COLOR', 'ODOMETER', 'VTNAME', 'LOCATION', 'CITY'));
-                            echo '<button type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#myModal">
-                            Show Results
-                          </button><span class="pl-3">'.$out[0].' vehicle(s) found</span>';
-                        }
+                    if($showButton){
+                        echo '<button type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#myModal">
+                        Show Results
+                    </button><span class="pl-3">'.$out[0].' vehicle(s) found</span>';
                     }
                 ?>
                 </div>

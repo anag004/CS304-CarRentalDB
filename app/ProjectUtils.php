@@ -109,7 +109,7 @@
                 }
 
                 if (!$requestObject['FROM_TIME']) {
-                    echo "DID NOT FIND FROM_TIME";
+                    echo ProjectUtils::getErrorBox("Please fill a complete time interval");
                     return false;
                 }
 
@@ -117,12 +117,12 @@
                 $from_date = ProjectUtils::constructDate($requestObject['FROM_DATE'], $requestObject['FROM_TIME']);
                 
                 if (!$requestObject['TO_DATE']) {
-                    echo "DID NOT FIND TO_DATE";
+                    echo ProjectUtils::getErrorBox("Please fill a complete time interval");
                     return false;
                 }
 
                 if (!$requestObject['TO_TIME']) {
-                    echo "DID NOT FIND TO_TIME";
+                    echo ProjectUtils::getErrorBox("Please fill a complete time interval");
                     return false;
                 }
 
