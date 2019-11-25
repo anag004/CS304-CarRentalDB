@@ -36,7 +36,86 @@
                     
                     $db = new Database();
                     $db->connect();
+
+                    $vtype = getVehicleType($_GET['VTYPE']);
+                    $diffHours = $_GET['DIFF'];
+                    $distance = $_GET['DISTANCE'];
+
+                    // Do the cost calculation =====
+                    $rentalCost = 0; 
+
+                    // Rental charges
+                    echo "<h4>Rental Charges</h4><br>";
+
+                    // Weekly charges
+                    $numWeeks = (int)($diffHours / (7 * 24));
+                    $wrate = $vtype['WRATE'];
+                    $weeklyCost = $wrate * $numWeeks;
+                    echo "Weekly Charges: $numWeeks x $wrate = $weeklyCost<br>";
+                    $diffHours -= $numWeeks * (7 * 24);
+                    $rentalCost += $weeklyCost;
                     
+                    // Daily charges
+                    $numDays = (int)($diffHours / 24);
+                    $drate = $vtype['DRATE'];
+                    $dailyCost = $drate * $numDays;
+                    echo "Daily Charges: $numDays x $drate = $dailyCost<br>";
+                    $diffHours -= $numDays * 24;
+                    $rentalCost += $dailyCost;
+
+                    // Hourly charges
+                    $numHours = $diffHours;
+                    $hrate = $vtype['HRATE'];
+                    $hourlyCost = $hrate * $numHours;
+                    echo "Hourly Charges: $numHours x $hrate = $hourlyCost<br>";
+                    $diffHours -= $numHours;
+                    $rentalCost += $dailyCost;
+
+                    echo "Total rental cost: $rentalCost<br>";
+
+                    echo "<h4>Insurance Charges</h4><br>";
+                    $insuranceCost = 0;
+
+                    // Weekly charges
+                    $wirate = $vtype['WIRATE'];
+                    $weeklyCost = $wirate * $numWeeks;
+                    echo "Weekly Charges: $numWeeks x $wirate = $weeklyCost<br>";
+                    $insuranceCost += $weeklyCost;
+                    
+                    // Daily charges
+                    $dirate = $vtype['DIRATE'];
+                    $dailyCost = $dirate * $numDays;
+                    echo "Daily Charges: $numDays x $dirate = $dailyCost<br>";
+                    $insuranceCost += $dailyCost;
+
+                    // Hourly charges
+                    $hirate = $vtype['HIRATE'];
+                    $hourlyCost = $hirate * $numHours;
+                    echo "Hourly Charges: $numHours x $hirate = $hourlyCost<br>";
+                    $insuranceCost += $dailyCost;
+
+                    echo "Total insurance cost: $insuranceCost<br>";
+
+                    echo "<h4>Kilometer Charges</h4><br>";
+                    $krate = $vtype['KRATE'];
+                    $kCost = $krate * $distance;
+                    echo "Distance charges $$krate x $distance = $kCost<br>";
+
+                    $totalCost = $rentalCost + $insuranceCost + $kCost;
+                    echo "GRAND TOTAL = $totalCost<br>";
+                    
+                    function getVehicleType($vtname) {
+                        global $db;
+            
+                        $queryString = "SELECT * FROM vehicle_types WHERE vtname = '$vtname'";
+                        $result = $db->executePlainSQL($queryString);
+            
+                        if (($vehicle_type = oci_fetch_array($result))) {
+                            return $vehicle_type; 
+                        } else {
+                            return false;
+                        }
+                    }
                 ?>
                 </div>
             </div>
