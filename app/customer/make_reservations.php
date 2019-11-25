@@ -34,15 +34,27 @@
                     require "../ProjectUtils.php";
                     $db = new Database();
                     $db->connect();
+
+                    $date_format = 'YYYY-MM-DD:HH24:MI';
+
                     // Check if the USER has made a POST request
                     if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                         if (existVehicles()) {
                             if (existCustomer()) {
-                                // Add the reservation into the database using a utils function
-                                $confNo = ProjectUtils::makeReservation($_POST, $db);
+                                $idate = "'" . $_POST['FROM_DATE'] . ":" . $_POST['FROM_TIME'] . "'";
+                                $fdate = "'" . $_POST['TO_DATE'] . ":" . $_POST['TO_TIME'] . "'";
 
-                                // Redirect to the view_reservations page
-                                header("Location: view_reservation.php?CONF_NO=" . $confNo);
+                                $diffHours = getDateDifference($idate, $fdate);
+
+                                if ($diffHours < 0) {
+                                    echo ProjectUtils::getErrorBox("The initial date must be less than the final date.");
+                                } else {
+                                    // Add the reservation into the database using a utils function
+                                    $confNo = ProjectUtils::makeReservation($_POST, $db);
+
+                                    // Redirect to the view_reservations page
+                                    header("Location: view_reservation.php?CONF_NO=" . $confNo);
+                                }
                             } else {
                                 echo ProjectUtils::getErrorBox("It seems you are not registered as a customer. <a href='new_customer.php'>Register Here.</a>");
                             }
@@ -90,6 +102,16 @@
                             return false;
                         }
                     }   
+
+                    function getDateDifference($idate, $fdate) {
+                        global $db, $date_format;
+
+                        $queryString = "SELECT to_date($fdate, '$date_format') - to_date($idate, '$date_format') AS datediff FROM dual";
+                        $result = $db->executePlainSQL($queryString);
+                        $row = oci_fetch_array($result);
+
+                        return (int)($row['DATEDIFF'] * 24);
+                    }
                 ?>
                     <form method="post">
                         <input type = "hidden" name="FETCH_DATA" value="true">
