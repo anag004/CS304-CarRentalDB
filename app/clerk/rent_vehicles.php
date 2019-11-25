@@ -74,6 +74,7 @@
                                 $reservation = false;
                                 $confNo = null;
                                 $datetime_format = "'YYYY-MM-DD:HH:MI'";
+                                $confNotUsed = true;
 
                                 // Check if the confirmation number is given 
                                 if (!isset($_POST['CONF_NO']) || $_POST['CONF_NO'] == "") {
@@ -83,12 +84,19 @@
                                     // Retrieve the reservation object and set variales
                                     $reservation = ProjectUtils::getReservation($confNo, $db, "*");
                                 } else {
-                                    // Find the reservation and set variables
-                                    $reservation = ProjectUtils::getReservation($_POST['CONF_NO'], $db, "VTNAME, to_char(FROM_DATETIME, " . $datetime_format . ") AS FROM_DATETIME, to_char(TO_DATETIME, " . $datetime_format . ") AS TO_DATETIME, VTNAME, LOCATION");
-                                    $confNo = $_POST['CONF_NO'];
+                                    // Check if there is a previous rental with the same confirmation number
+                                    $prevRental = getRental($_POST['CONF_NO']);
+
+                                    if (!$prevRental) {
+                                        // Find the reservation and set variables
+                                        $reservation = ProjectUtils::getReservation($_POST['CONF_NO'], $db, "VTNAME, to_char(FROM_DATETIME, " . $datetime_format . ") AS FROM_DATETIME, to_char(TO_DATETIME, " . $datetime_format . ") AS TO_DATETIME, VTNAME, LOCATION");
+                                        $confNo = $_POST['CONF_NO'];
+                                    } else {
+                                        $confNotUsed = false;
+                                    }
                                 }
 
-                                if ($reservation) {
+                                if ($reservation && $confNotUsed) {
                                     // Find a vehicle with the given type and license between the given dates
                                     $queryString = "SELECT * FROM vehicles v WHERE NOT EXISTS ( ";
                                     $queryString .= "SELECT * FROM rentals rent, reservations resv WHERE ";
@@ -122,9 +130,25 @@
                                     } else {
                                         echo ProjectUtils::getErrorBox("No available cars.");
                                     }
-
                                 } else {
-                                    echo ProjectUtils::getErrorBox("Invalid confirmation number");
+                                    if (!$confNotUsed) {
+                                        echo ProjectUtils::getErrorBox("This confirmation number has already been used.");
+                                    } else  {
+                                        echo ProjectUtils::getErrorBox("Invalid confirmation number");
+                                    }
+                                }
+                            }
+
+                            function getRental($confNo) {
+                                global $db;
+
+                                $queryString = "SELECT * FROM rentals WHERE conf_no = $confNo";
+                                $result = $db->executePlainSQL($queryString);
+                                
+                                if (($rental = oci_fetch_array($result)) != false) {
+                                    return $rental;
+                                } else {
+                                    return false;
                                 }
                             }
                         ?>
