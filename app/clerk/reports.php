@@ -116,8 +116,10 @@
                             // Assemble the SQL query
                             $queryString = "SELECT v.location, v.vtname, v.make, v.model, v.year, v.color, v.vlicense FROM vehicles v, rentals rent, reservations res ";
                             $queryString .= " WHERE rent.vlicense = v.vlicense AND rent.conf_no = res.conf_no ";
-                            $queryString .= " AND to_date($start_date, $date_format) <= res.from_datetime ";
-                            $queryString .= " AND to_date($end_date, $date_format) >= res.from_datetime ";
+                            if ($_GET['date'] != "") {
+                                $queryString .= " AND to_date($start_date, $date_format) <= res.from_datetime ";
+                                $queryString .= " AND to_date($end_date, $date_format) >= res.from_datetime ";
+                            }
                             $queryString .= " ORDER BY v.location, v.vtname";
 
 
@@ -138,8 +140,10 @@
                             // Assemble the query
                             $queryString = "SELECT v.vtname, COUNT(*) AS COUNT FROM vehicles v, reservations res, rentals rent";
                             $queryString .= " WHERE rent.vlicense = v.vlicense AND rent.conf_no = res.conf_no";
-                            $queryString .= " AND to_date($start_date, $date_format) <= res.from_datetime ";
-                            $queryString .= " AND to_date($end_date, $date_format) >= res.from_datetime ";
+                            if ($_GET['date'] != "") {
+                                $queryString .= " AND to_date($start_date, $date_format) <= res.from_datetime ";
+                                $queryString .= " AND to_date($end_date, $date_format) >= res.from_datetime ";
+                            }
                             $queryString .= " GROUP BY v.vtname";
 
                             // Query the database
@@ -154,8 +158,10 @@
                             // Assemble the query
                             $queryString = "SELECT v.location, COUNT(*) AS COUNT FROM vehicles v, reservations res, rentals rent";
                             $queryString .= " WHERE rent.vlicense = v.vlicense AND rent.conf_no = res.conf_no";
-                            $queryString .= " AND to_date($start_date, $date_format) <= res.from_datetime ";
-                            $queryString .= " AND to_date($end_date, $date_format) >= res.from_datetime ";
+                            if ($_GET['date'] != "") {
+                                $queryString .= " AND to_date($start_date, $date_format) <= res.from_datetime ";
+                                $queryString .= " AND to_date($end_date, $date_format) >= res.from_datetime ";
+                            }
                             $queryString .= " GROUP BY v.location";
 
                             // Query the database
@@ -180,8 +186,13 @@
                                 $queryString = "SELECT v.vtname, v.make, v.model, v.year, v.color, v.vlicense FROM vehicles v, rentals rent, reservations res ";
                                 $queryString .= " WHERE rent.vlicense = v.vlicense AND rent.conf_no = res.conf_no ";
                                 $queryString .= " AND v.location  = '$location'";
-                                $queryString .= " AND to_date($start_date, $date_format) <= res.from_datetime ";
-                                $queryString .= " AND to_date($end_date, $date_format) >= res.from_datetime ";
+                                if ($_GET['date'] != "") {
+                                    echo "DATENO<br>";
+                                    $queryString .= " AND to_date($start_date, $date_format) <= res.from_datetime ";
+                                    $queryString .= " AND to_date($end_date, $date_format) >= res.from_datetime ";
+                                } else {
+                                    echo "DATEEMPTY<br>";
+                                }
                                 $queryString .= " ORDER BY v.vtname";
 
                                 // Query the database
@@ -201,8 +212,10 @@
                                 $queryString = "SELECT v.vtname, COUNT(*) AS COUNT FROM vehicles v, reservations res, rentals rent";
                                 $queryString .= " WHERE rent.vlicense = v.vlicense AND rent.conf_no = res.conf_no";
                                 $queryString .= " AND v.location  = '$location'";
-                                $queryString .= " AND to_date($start_date, $date_format) <= res.from_datetime ";
-                                $queryString .= " AND to_date($end_date, $date_format) >= res.from_datetime ";
+                                if ($_GET['date'] != "") {
+                                    $queryString .= " AND to_date($start_date, $date_format) <= res.from_datetime ";
+                                    $queryString .= " AND to_date($end_date, $date_format) >= res.from_datetime ";
+                                }
                                 $queryString .= " GROUP BY v.vtname";
 
                                 // Query the database
@@ -220,7 +233,9 @@
                             // Assemble the SQL query
                             $queryString = "SELECT v.location, v.vtname, v.make, v.model, v.year, v.color, v.vlicense FROM vehicles v, rentals rent, returns ret ";
                             $queryString .= " WHERE rent.vlicense = v.vlicense AND rent.rid = ret.rid ";
-                            $queryString .= " AND to_date('$date_value', $date_format) = ret.return_date";
+                            if ($_GET['date'] != "") {
+                                $queryString .= " AND to_date('$date_value', $date_format) = ret.return_date";
+                            } 
                             $queryString .= " ORDER BY v.location, v.vtname";
 
                             // Query the database
@@ -237,7 +252,9 @@
                             // Assemble the SQL query
                             $queryString = "SELECT v.vtname, SUM(ret.value) AS revenue, COUNT(*) AS count FROM vehicles v, rentals rent, returns ret ";
                             $queryString .= " WHERE rent.vlicense = v.vlicense AND rent.rid = ret.rid ";
-                            $queryString .= " AND to_date('$date_value', $date_format) = ret.return_date";
+                            if ($_GET['date'] != "") {
+                                $queryString .= " AND to_date('$date_value', $date_format) = ret.return_date";
+                            }
                             $queryString .= " GROUP BY v.vtname";
 
                             // Query the database
@@ -253,7 +270,9 @@
                             // Assemble the SQL query
                             $queryString = "SELECT v.location, SUM(ret.value) AS revenue, COUNT(*) AS count FROM vehicles v, rentals rent, returns ret ";
                             $queryString .= " WHERE rent.vlicense = v.vlicense AND rent.rid = ret.rid ";
-                            $queryString .= " AND to_date('$date_value', $date_format) = ret.return_date";
+                            if ($_GET['date'] != "") {
+                                $queryString .= " AND to_date('$date_value', $date_format) = ret.return_date";
+                            }
                             $queryString .= " GROUP BY v.location";
 
                             // Query the database
@@ -269,7 +288,10 @@
                             // Assemble the SQL query
                             $queryString = "SELECT SUM(ret.value) FROM vehicles v, rentals rent, returns ret ";
                             $queryString .= " WHERE rent.vlicense = v.vlicense AND rent.rid = ret.rid ";
-                            $queryString .= " AND to_date('$date_value', $date_format) = ret.return_date";
+                            if ($_GET['date'] != "") {
+                                $queryString .= " AND to_date('$date_value', $date_format) = ret.return_date";
+                            }
+
 
                             // Query the database
                             $result = $db->executePlainSQL($queryString);
@@ -288,7 +310,9 @@
                                 // Assemble the SQL query
                                 $queryString = "SELECT v.vtname, v.make, v.model, v.year, v.color, v.vlicense FROM vehicles v, rentals rent, returns ret ";
                                 $queryString .= " WHERE rent.vlicense = v.vlicense AND rent.rid = ret.rid ";
-                                $queryString .= " AND to_date('$date_value', $date_format) = ret.return_date";
+                                if ($_GET['date'] != "") {
+                                    $queryString .= " AND to_date('$date_value', $date_format) = ret.return_date";
+                                }
                                 $queryString .= " AND v.location = '$location'";
                                 $queryString .= " ORDER BY v.vtname";
 
@@ -306,7 +330,9 @@
                                 // Assemble the SQL query
                                 $queryString = "SELECT v.vtname, SUM(ret.value) AS revenue, COUNT(*) AS count FROM vehicles v, rentals rent, returns ret ";
                                 $queryString .= " WHERE rent.vlicense = v.vlicense AND rent.rid = ret.rid ";
-                                $queryString .= " AND to_date('$date_value', $date_format) = ret.return_date";
+                                if ($_GET['date'] != "") {
+                                    $queryString .= " AND to_date('$date_value', $date_format) = ret.return_date";
+                                }
                                 $queryString .= " AND v.location = '$location'";
                                 $queryString .= " GROUP BY v.vtname";
 
@@ -324,7 +350,9 @@
                                 $queryString = "SELECT SUM(ret.value) FROM vehicles v, rentals rent, returns ret ";
                                 $queryString .= " WHERE rent.vlicense = v.vlicense AND rent.rid = ret.rid ";
                                 $queryString .= " AND v.location = '$location'";
-                                $queryString .= " AND to_date('$date_value', $date_format) = ret.return_date";
+                                if ($_GET['date'] != "") {
+                                    $queryString .= " AND to_date('$date_value', $date_format) = ret.return_date";
+                                }
 
                                 // Query the database
                                 $result = $db->executePlainSQL($queryString);
@@ -357,7 +385,7 @@
                         <div class="form-group">
                             <label>Date:</label> 
                             
-                            <input type='date' name="date" class="form-control" required="true">
+                            <input type='date' name="date" class="form-control">
                         </div>
                         <input type='submit' value="Generate Report" class="btn btn-info btn-sm">
                         <input type='button' onclick="window.location.href='./reports.php'" value="Reset" class="btn btn-info btn-sm">
