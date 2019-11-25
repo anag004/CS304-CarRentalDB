@@ -147,6 +147,25 @@
 
             $totalCost = $rentalCost + $insuranceCost + $kCost;
             echo "GRAND TOTAL = $totalCost<br>";
+
+            // Update the odometer reading of the vehicle
+            $vlicense = $vehicle['VLICENSE'];
+            $queryString = "UPDATE vehicles SET odometer = $final_dist WHERE vlicense = $vlicense";
+            $db->executePlainSQL($queryString);
+            $db->commit();
+
+            
+            $fullTank = "";
+            if ($_POST['tank'] == 'full') {
+                $fullTank = "y";
+            } else {
+                $fullTank = "n";
+            }
+
+            // Insert the return entry into the db
+            $queryString = "INSERT INTO returns VALUES('$rid', to_date($final_date, '$date_format'), $final_dist, '$fullTank', $totalCost)";
+            $db->executePlainSQL($queryString);
+            $db->commit();
         } else {
             echo ProjectUtils::getErrorBox("There is no rental with ID $rid");
         }
