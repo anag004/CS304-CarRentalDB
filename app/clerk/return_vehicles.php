@@ -33,16 +33,16 @@
                         <input type = "hidden" name="FETCH_DATA" value="true">
                         <div class="form-group">
                             <label>Rental ID:</label>
-                            <input type="text" name="rid" class="form-control">
+                            <input type="text" name="rid" class="form-control" required="true">
                         </div>
                         <div class="form-group">
                             <label>Return Time:</label> 
-                                <input type='date' name="date" class="form-control">
-                                <input type='time' name="time" class="form-control">
+                                <input type='date' name="date" class="form-control" required="true">
+                                <input type='time' name="time" class="form-control" required="true">
                         </div>
                         <div class="form-group">
                             <label>Odometer:</label> 
-                            <input type='text' name="odometer" pattern="[0-9]*" class="form-control">
+                            <input type='text' name="odometer" pattern="[0-9]*" class="form-control" required="true">
                         </div>
                         <div class="form-check">
                             <input type="checkbox" class="form-check-input" name="tank" value="full">
