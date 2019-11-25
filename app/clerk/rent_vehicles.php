@@ -21,13 +21,17 @@
             }
             function set_res(){
                 $(".res").show();
+                $(".res").find("input").attr('required',true);
                 $(".no-res").find("input").val('');
                 $(".no-res").hide();
+                $(".no-res").find("input").attr('required',false);
             }
             function set_no_res(){
                 $(".no-res").show();
+                $(".no-res").find("input").attr('required',true);
                 $(".res").find("input").val('');
                 $(".res").hide();
+                $(".res").find("input").attr('required',false);
             }
 
             set_res();
@@ -177,18 +181,18 @@
                         </div>
                         <div class="form-group">
                             <label>Card Name:</label>
-                            <input type="text" name="CARD_NAME" class="form-control">
+                            <input type="text" name="CARD_NAME" class="form-control" required>
                         </div>
                         <div class="form-group">
                             <label>Card Number:</label>
-                            <input type="text" name="CARD_NO" pattern="[0-9]*" class="form-control">
+                            <input type="text" name="CARD_NO" pattern="[0-9]*" class="form-control" required>
                         </div>
                         <div class="form-group">
                             <label>Card Expiry Date:</label>
                             <input type='date' name="EXP_DATE" class="form-control">
                         </div>
                         <input type='submit' value="Rent Vehicle" class="btn btn-info btn-sm">
-                        <input type='button' onclick="window.location.href='./rent_vehicles.php'" value="Reset" class="btn btn-info btn-sm">
+                        <input type='button' onclick="window.location.href='./rent_vehicles.php'" value="Reset" class="btn btn-info btn-sm" required>
                     </form> 
                 </div>
                 <div class="card-footer">
