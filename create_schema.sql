@@ -83,6 +83,7 @@ create table rentals (
 	exp_date date,
 	conf_no varchar(40),
 	primary key (rid),
+	unique (conf_no),
 	foreign key (conf_no) references reservations(conf_no),
 	foreign key (vlicense) references vehicles(vlicense)
 );
