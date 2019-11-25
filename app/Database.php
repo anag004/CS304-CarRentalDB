@@ -18,6 +18,9 @@ class Database {
 
     // Executes a plain SQL command, returns the result
     function executePlainSQL($cmdstr) {
+        // Print the query
+        echo "<div style='display:none' id='query'>$cmdstr</div>";
+
         $statement = OCIParse($this->db_conn, $cmdstr);
 
         if (!$statement) {
