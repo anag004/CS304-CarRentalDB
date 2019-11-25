@@ -383,8 +383,7 @@
                         </div>
                         
                         <div class="form-group">
-                            <label>Date:</label> 
-                            
+                            <label>Date (leave blank for all):</label> 
                             <input type='date' name="date" class="form-control">
                         </div>
                         <input type='submit' value="Generate Report" class="btn btn-info btn-sm">

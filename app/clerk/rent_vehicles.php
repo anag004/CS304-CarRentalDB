@@ -77,7 +77,6 @@
 
                                 // Check if the confirmation number is given 
                                 if (!isset($_POST['CONF_NO']) || $_POST['CONF_NO'] == "") {
-                                    echo "CONF_NO NOT GIVEN<br>";
                                     // Look at the other data to make a reservation and link to the rental
                                     $confNo = ProjectUtils::makeReservation($_POST, $db);
 
@@ -88,8 +87,6 @@
                                     $reservation = ProjectUtils::getReservation($_POST['CONF_NO'], $db, "VTNAME, to_char(FROM_DATETIME, " . $datetime_format . ") AS FROM_DATETIME, to_char(TO_DATETIME, " . $datetime_format . ") AS TO_DATETIME, VTNAME, LOCATION");
                                     $confNo = $_POST['CONF_NO'];
                                 }
-
-                                var_dump($reservation);
 
                                 if ($reservation) {
                                     // Find a vehicle with the given type and license between the given dates
@@ -114,8 +111,6 @@
                                         $date_format = "YYYY-MM-DD";
                                         $exp_date = "to_date('" . $_POST['EXP_DATE'] . "', '" . $date_format . "')";
                                         $rid = hash('ripemd160', $dlicense . $to_datetime . $from_datetime . $vlicense);
-
-                                        echo "DLICENSE: " . $dlicense . "<br>";
 
                                         // Create the rental
                                         $queryString = "INSERT INTO rentals VALUES('" . $rid . "', " . $vlicense . ", " . $odometer . ", '" . $card_name . "', " . $card_no . ", " . $exp_date . ", '" . $confNo . "')";
