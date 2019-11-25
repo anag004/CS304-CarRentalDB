@@ -21,15 +21,15 @@
             return "to_date(" . $date_string . ", "  . $date_format . ")";
         }
 
-        public static function getResultInTable($result, $arr) {
+        public static function getResultInTable($result, $arr, $class="") {
             // echo "DISPLAY CALLED <br>";
             $counter = 0;
             $arr_len = count($arr);
         
-            $out= "<table class='table table-sm table-hover'>";
+            $out= "<table class='table table-sm table-hover ".$class."'>";
 
             $out.= "<thead class='thead-light'><tr>";
-            $out.= "<th >" . "SNO" . "</th>";
+            $out.= "<th>" . "SNO" . "</th>";
             for($i = 0; $i < $arr_len; $i++) {
                 $out.= "<th>" . $arr[$i] . "</th>";
             }
@@ -54,13 +54,24 @@
             $fromDate = ProjectUtils::constructDate($requestObject['FROM_DATE'], $requestObject['FROM_TIME']);
             $toDate = ProjectUtils::constructDate($requestObject['TO_DATE'], $requestObject['TO_TIME']);
             
-            $insertDetails = "'" . $requestObject['VTNAME'] . "'" . ", " . $requestObject['DLICENSE'] . ", " . $fromDate . ", " . $toDate;
+            $insertDetails = "'" . $requestObject['VTNAME'] . "'" . ", " . $requestObject['DLICENSE'] . ", " . $fromDate . ", " . $toDate . ", '" . $requestObject['LOCATION'] . "'";
             $confNo = hash('ripemd160', $insertDetails);
             
             $result = $db_conn->executePlainSQL("INSERT INTO reservations VALUES (" . "'" . $confNo . "'" . ", " . $insertDetails . ")");
             $db_conn->commit();
 
             return $confNo;
+        }
+
+        // Checks if a reservation exists with the given data
+        public static function getReservation($confNo, $db_conn, $infoString) {
+            $result = $db_conn->executePlainSQL("SELECT " . $infoString . " FROM reservations WHERE conf_no = " . "'" . $confNo . "'");
+
+            if (($row = oci_fetch_array($result)) != false) {
+                return $row;
+            } else {
+                return false;
+            }
         }
 
         // Returns an SQL command for the appropriate vehicle
@@ -117,7 +128,7 @@
 
                 $to_date = ProjectUtils::constructDate($requestObject['TO_DATE'], $requestObject['TO_TIME']);
 
-                $result = $result . "NOT EXISTS ( SELECT  * FROM rentals r WHERE (" . $from_date . ", " . $to_date . ") OVERLAPS (r.FROM_DATETIME, r.TO_DATETIME) AND r.vlicense = v.vlicense )";
+                $result = $result . "NOT EXISTS ( SELECT  * FROM rentals rent, reservations resv WHERE (" . $from_date . ", " . $to_date . ") OVERLAPS (resv.FROM_DATETIME, resv.TO_DATETIME) AND rent.vlicense = v.vlicense AND resv.conf_no = rent.conf_no )";
             } else if ($requestObject['FROM_TIME'] || $requestObject['TO_DATE'] || $requestObject['TO_TIME']) {
                 return false;
             } 
@@ -139,10 +150,17 @@
             // echo $result;
             return $result;
         }
-        public static function getErrorBox($text){
-            return '<div class="alert alert-danger alert-dismissible">
-            <button type="button" class="close" data-dismiss="alert">&times;</button>
-            <strong>ERROR: </strong>'.$text.'</div>';
+        public static function getErrorBox($text,$color="red"){
+            if($color =="red"){
+                return '<div class="alert alert-danger alert-dismissible">
+                <button type="button" class="close" data-dismiss="alert">&times;</button>
+                <strong>ERROR: </strong>'.$text.'</div>';
+            }
+            if($color == "blue"){
+                return '<div class="alert alert-info alert-dismissible">
+                <button type="button" class="close" data-dismiss="alert">&times;</button>
+                <strong>INFO: </strong>'.$text.'</div>';
+            }
         }
 
     }

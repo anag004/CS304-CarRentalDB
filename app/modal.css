@@ -18,3 +18,23 @@
     text-align: center;
     /* overflow: scroll; */
 }
+
+.two-split .secondaryColor1.primaryColor1{
+    background-color: #FFEEBA;
+}
+.two-split .secondaryColor1.primaryColor2{
+    background-color: #CCE8ED;
+}
+.two-split .secondaryColor2.primaryColor1{
+    background-color: #F7DA83;
+}
+.two-split .secondaryColor2.primaryColor2{
+    background-color: #87E0D9;    
+}
+
+.one-split .primaryColor1{
+    background-color: #FFEEBA;
+}
+.one-split .primaryColor2{
+    background-color: #F7DA83;
+}

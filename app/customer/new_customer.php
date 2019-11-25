@@ -15,57 +15,66 @@
                 <div class="card-header">
                 <h3 class="mb-0">
                         Create New Account 
-                        <div class="float-right btn btn-info" onclick="window.location.href='../home.php';">
+                        <div class="float-right btn btn-info btn-sm" onclick="window.location.href='../home.php';">
                             Home
                         </div>
                     </h3>
                 </div>
                 <div class="card-body">
-                    <form>
+                    <form method="post">
                         <div class="form-group">
                             <label> Name: </label>
-                            <input type='text' name='name' class="form-control">
+                            <input type='text' name='NAME' class="form-control" required="true" value="Lorem">
                         </div>
                         <div class="form-group">
                             <label>Address: </label>
-                            <input type='text' name='address' class="form-control">
+                            <input type='text' name='ADDRESS' class="form-control" required="true" value="Ipsum">
                         </div>
                         <div class="form-group">
                             <label>Cellphone Number: </label>
-                            <input type="tel" name="cellphone" pattern="[0-9]{3}-[0-9]{2}-[0-9]{3}" class="form-control">
+                            <input type="tel" name="CELLPHONE" pattern="[0-9]*" class="form-control" required="true" value="123">
                         </div>
                         <div class="form-group">
                             <label>Driver's Licence Number:</label> 
-                            <input type='tel' name="dlicense" class="form-control">
+                            <input type='tel' name="DLICENSE" class="form-control" required="true" value="123">
                         </div>
                         <div class="form-group">                        
-                            <input type='submit' value="Create New Account" class = "btn btn-info">
-                            <input type='reset' value="Reset" class = "btn btn-info">
+                            <input type='submit' value="Create New Account" class = "btn btn-info btn-sm">
+                            <input type='reset' value="Reset" class = "btn btn-info btn-sm">
                         </div>
                     </form>
                 </div>
                 <div class="card-footer">
-                    Hello
+                     
                 </div>
             </div>
         </div>
         <div class="col-md-2"></div>
     </div>
-<head><title>Create Customer Profile</title></head>
-<body>
-<h3>Create Customer Profile</h3>
-<
-    Na
-    <input type='text' name='na
-    Addre
-    <input type='text' name='addre
-    Cellphone Numb
-    <input type="tel" name="cellphone" pattern="[0-9]{3}-[0-9]{2}-[0-9]{
-    Driver's Licence Numb
-    <input type='tel' name="dlicen
-    <input type='submit' value="Create New Account">
-    <input type='reset' value="Reset">
-    <hr>
-</form>
+    <?php
+        // Check if data has been POSTed
+        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+            // Registers a new customer
+            require "../Database.php";
+            require "../ProjectUtils.php";
+
+            $db = new Database();
+            $db->connect();
+
+            // Assemble the SQL query
+            $queryString = "INSERT INTO CUSTOMERS VALUES(";
+            $queryString .= $_POST['CELLPHONE'] . ", ";
+            $queryString .= "'" . $_POST['NAME'] . "', ";
+            $queryString .= "'" . $_POST['ADDRESS'] . "', ";
+            $queryString .= $_POST['DLICENSE'] . ")";
+
+            // Insert into the database and commit
+            $db->executePlainSQL($queryString);
+            $db->commit();
+
+            // Redirect to success page
+            header("Location: make_reservations.php?STATUS=registered&DLICENSE=".$_POST['DLICENSE']);
+        }
+    ?>
 </body>
 </html> 

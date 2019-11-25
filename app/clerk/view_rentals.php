@@ -1,6 +1,6 @@
 <html>
 <head>
-    <title>Successful Reservation</title>
+    <title>Successful Rentalrn</title>
     <!-- Latest compiled and minified CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
     <link rel="stylesheet" href="../modal.css">
@@ -23,7 +23,7 @@
             <div class="card rounded shadow shadow-sm">
                 <div class="card-header">
                 <h3 class="mb-0">
-                        Successful Reservation! 
+                        Successful Rental! 
                         <div class="float-right btn btn-info btn-sm" onclick="window.location.href='../home.php';">
                             Home
                         </div>
@@ -36,19 +36,26 @@
                     
                     $db = new Database();
                     $db->connect();
+                    
+                    $rentalResult = $db->executePlainSQL("SELECT * FROM rentals WHERE rid = '" . $_GET['RID'] . "'");
+            
+                    // Find the corresponding reservation
+                    $reservationResult = $db->executePlainSQL("SELECT * FROM reservations WHERE conf_no = '" . $_GET['CONF_NO'] . "'");
 
-                    // Find a reservation object
-                    $result = $db->executePlainSQL("SELECT * FROM reservations WHERE conf_no = '" . $_GET['CONF_NO'] . "'");
-
-                    // Print this reservation object
-                    if (($row = oci_fetch_row($result)) != false) {
+                    // Print this rental object
+                    if (($rental = oci_fetch_array($rentalResult)) != false && ($reservation = oci_fetch_array($reservationResult)) != false) {
                         echo "<table class='table'>";
-                        $hlist=array("CONFIRMATION NUMBER","VEHICLE TYPE","DRIVER'S LICENSE NUMBER","BEGIN DATE/TIME","END DATE/TIME","LOCATION");
-                        for($i=0; $i<6;$i++){
-                            echo "<tr><td>".$hlist[$i]."</td><td>".$row[$i]."</td></tr>";
+                        $hlist=array("RENTAL ID","VEHICLE LICENSE NUMBER","DRIVER'S LICENSE NUMBER","LOCATION");
+                        $ilist=array("RID","VLICENSE","DLICENSE","LOCATION");
+                        for($i=0; $i<2;$i++){
+                            echo "<tr><td>".$hlist[$i]."</td><td>".$rental[$ilist[$i]]."</td></tr>";
                         }
+                        for($i=2; $i<4;$i++){
+                            echo "<tr><td>".$hlist[$i]."</td><td>".$reservation[$ilist[$i]]."</td></tr>";
+                        }
+                        echo "</table>";
                     } else {
-                        echo ProjectUtils::getErrorBox("Invalid reservation conf_no");
+                        echo ProjectUtils::getErrorBox("Invalid rental ID");
                     }
                 ?>
                 </div>

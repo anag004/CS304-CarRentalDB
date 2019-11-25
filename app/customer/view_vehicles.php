@@ -24,7 +24,7 @@
                 <div class="card-header">
                 <h3 class="mb-0">
                         View Vehicles 
-                        <div class="float-right btn btn-info" onclick="window.location.href='../home.php';">
+                        <div class="float-right btn btn-info btn-sm" onclick="window.location.href='../home.php';">
                             Home
                         </div>
                     </h3>
@@ -65,8 +65,8 @@
                             <input type='time' name="TO_TIME" class="form-control">
                         </div>
                         
-                        <input type='submit' value="Search" class="btn btn-info">
-                        <input type='button' onclick="window.location.href='./view_vehicles.php'" value="Reset" class="btn btn-info">
+                        <input type='submit' value="Search" class="btn btn-info btn-sm">
+                        <input type='button' onclick="window.location.href='./view_vehicles.php'" value="Reset" class="btn btn-info btn-sm">
                     </form> 
                 </div>
                 <div class="card-footer">
@@ -79,8 +79,8 @@
                             echo ProjectUtils::getErrorBox("Invalid request for vehicle list");
                         } else {
                             $result = $db->executePlainSQL($queryString);
-                            $out = ProjectUtils::getResultInTable($result, array('VLICENSE', 'MAKE', 'YEAR', 'COLOR', 'ODOMETER', 'STATUS', 'VTNAME', 'LOCATION', 'CITY'));
-                            echo '<button type="button" class="btn btn-info" data-toggle="modal" data-target="#myModal">
+                            $out = ProjectUtils::getResultInTable($result, array('VLICENSE', 'MAKE', 'YEAR', 'COLOR', 'ODOMETER', 'VTNAME', 'LOCATION', 'CITY'));
+                            echo '<button type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#myModal">
                             Show Results
                           </button><span class="pl-3">'.$out[0].' vehicle(s) found</span>';
                         }
@@ -106,7 +106,7 @@
         echo  $out[1];
         echo "</div>
         <div class='modal-footer'>
-            <button type='button' class='btn btn-info' data-dismiss='modal'>Close</button>
+            <button type='button' class='btn btn-info btn-sm' data-dismiss='modal'>Close</button>
         </div>
 
         </div>
