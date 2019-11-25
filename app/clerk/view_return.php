@@ -41,6 +41,14 @@
                     $diffHours = $_GET['DIFF'];
                     $distance = $_GET['DISTANCE'];
 
+                    // Get the confirmation number
+                    $rid = $_GET['RID'];
+                    $queryString = "SELECT res.conf_no FROM reservations res, rentals rent";
+                    $queryString .= " WHERE rent.rid = '$rid' AND rent.conf_no = res.conf_no";
+                    $result = $db->executePlainSQL($queryString);
+                    $confNo = oci_fetch_array($result)['CONF_NO'];
+
+
                     // Do the cost calculation =====
                     $rentalCost = 0; 
 
@@ -103,6 +111,9 @@
                             return false;
                         }
                     }
+ 
+                    echo "Return date: " . $_GET['DATE'] . "<br>";
+                    echo "Confirmation number: $confNo" . "<br>";
                     echo "<strong>Rental Charges</strong><br>";
                     echo "Weekly Charges: $numWeeks x $wrate = $weeklyCost<br>";
                     echo "Daily Charges: $numDays x $drate = $dailyCost<br>";
