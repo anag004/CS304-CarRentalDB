@@ -61,19 +61,34 @@
             $db = new Database();
             $db->connect();
 
-            // Assemble the SQL query
-            $queryString = "INSERT INTO CUSTOMERS VALUES(";
-            $queryString .= $_POST['CELLPHONE'] . ", ";
-            $queryString .= "'" . $_POST['NAME'] . "', ";
-            $queryString .= "'" . $_POST['ADDRESS'] . "', ";
-            $queryString .= $_POST['DLICENSE'] . ")";
+            // Check that the driver's license and cellphone don't already exist
+            $queryString = "SELECT * FROM customers WHERE dlicense = " . $_POST['DLICENSE'];
+            $result = $db->executePlainSQL($queryString);
 
-            // Insert into the database and commit
-            $db->executePlainSQL($queryString);
-            $db->commit();
+            if (($row = oci_fetch_array($result)) != false) {
+                echo ProjectUtils::getErrorBox("A driver with license " . $_POST['DLICENSE'] . " already exists.");
+            } else {
+                $queryString = "SELECT * FROM customers WHERE cellphone = " . $_POST['CELLPHONE'];
+                $result = $db->executePlainSQL($queryString);
 
-            // Redirect to success page
-            header("Location: make_reservations.php?STATUS=registered&DLICENSE=".$_POST['DLICENSE']);
+                if (($row = oci_fetch_array($result)) != false) {
+                    echo ProjectUtils::getErrorBox("A driver with cellphone " . $_POST['CELLPHONE'] . " already exists.");
+                } else {
+                    // Assemble the SQL query
+                    $queryString = "INSERT INTO CUSTOMERS VALUES(";
+                    $queryString .= $_POST['CELLPHONE'] . ", ";
+                    $queryString .= "'" . $_POST['NAME'] . "', ";
+                    $queryString .= "'" . $_POST['ADDRESS'] . "', ";
+                    $queryString .= $_POST['DLICENSE'] . ")";
+
+                    // Insert into the database and commit
+                    $db->executePlainSQL($queryString);
+                    $db->commit();
+
+                    // Redirect to success page
+                    header("Location: make_reservations.php?STATUS=registered&DLICENSE=".$_POST['DLICENSE']);
+                }
+            }
         }
     ?>
 </body>
