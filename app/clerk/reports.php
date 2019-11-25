@@ -17,6 +17,9 @@
     <link href="https://fonts.googleapis.com/css?family=Roboto+Slab&display=swap" rel="stylesheet">
 
     <script>
+        $(window).on('load',function(){
+            $('#myModal').modal('show');
+        });
         $(document).ready(function(){
             var table = $("table");
             if(table.length){
