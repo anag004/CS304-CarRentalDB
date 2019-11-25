@@ -132,6 +132,7 @@
 
                 $result = $result . "NOT EXISTS ( SELECT  * FROM rentals rent, reservations resv WHERE (" . $from_date . ", " . $to_date . ") OVERLAPS (resv.FROM_DATETIME, resv.TO_DATETIME) AND rent.vlicense = v.vlicense AND resv.conf_no = rent.conf_no )";
             } else if ($requestObject['FROM_TIME'] || $requestObject['TO_DATE'] || $requestObject['TO_TIME']) {
+                echo ProjectUtils::getErrorBox("Please fill a complete time interval");
                 return false;
             } 
 
