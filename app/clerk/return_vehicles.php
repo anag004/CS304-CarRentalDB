@@ -59,74 +59,83 @@
                                     // Do the cost calculation =====
                                     $rentalCost = 0; 
 
-                                    // Weekly charges
-                                    $numWeeks = (int)($diffHours / (7 * 24));
-                                    $wrate = $vtype['WRATE'];
-                                    $weeklyCost = $wrate * $numWeeks;
-                                    $diffHours -= $numWeeks * (7 * 24);
-                                    $rentalCost += $weeklyCost;
-                                    
-                                    // Daily charges
-                                    $numDays = (int)($diffHours / 24);
-                                    $drate = $vtype['DRATE'];
-                                    $dailyCost = $drate * $numDays;
-                                    $diffHours -= $numDays * 24;
-                                    $rentalCost += $dailyCost;
-
-                                    // Hourly charges
-                                    $numHours = $diffHours;
-                                    $hrate = $vtype['HRATE'];
-                                    $hourlyCost = $hrate * $numHours;
-                                    $diffHours -= $numHours;
-                                    $rentalCost += $dailyCost;
-
-                                    $insuranceCost = 0;
-
-                                    // Weekly charges
-                                    $wirate = $vtype['WIRATE'];
-                                    $weeklyCost = $wirate * $numWeeks;
-                                    $insuranceCost += $weeklyCost;
-                                    
-                                    // Daily charges
-                                    $dirate = $vtype['DIRATE'];
-                                    $dailyCost = $dirate * $numDays;
-                                    $insuranceCost += $dailyCost;
-
-                                    // Hourly charges
-                                    $hirate = $vtype['HIRATE'];
-                                    $hourlyCost = $hirate * $numHours;
-                                    $insuranceCost += $dailyCost;
-
-                                    $distance = $final_dist - $initial_dist;
-                                    $krate = $vtype['KRATE'];
-                                    $kCost = $krate * $distance;
-                                
-                                    $totalCost = $rentalCost + $insuranceCost + $kCost;
-                                    
-                                    $fullTank = "";
-                                    if ($_POST['tank'] == 'full') {
-                                        $fullTank = "y";
-                                    } else {
-                                        $fullTank = "n";
-                                    }
-
-                                    // Insert the return entry into the db
-                                    $queryString = "INSERT INTO returns VALUES('$rid', to_date($final_date, '$date_format'), $final_dist, '$fullTank', $totalCost)";
-                                    $db->executePlainSQL($queryString);
-                                    $db->commit();
-
-                                    // Update the odometer reading of the vehicle
-                                    $vlicense = $vehicle['VLICENSE'];
-                                    $queryString = "UPDATE vehicles SET odometer = $final_dist WHERE vlicense = $vlicense";
-                                    $db->executePlainSQL($queryString);
-                                    $db->commit();
-
                                     // Get the difference between dates in hours
                                     $diffHours = getDateDifference($initial_date, $final_date);
-                                    $vtname = $vehicle['VTNAME'];
 
-                                    // Pass it to the sucess page
-                                    header("Location: view_return.php?DIFF=$diffHours&DISTANCE=$distance&VTYPE=$vtname");
+                                    if ($diffHours >= 0) {
+                                        if ($final_dist >= $initial_dist) {
+                                            // Weekly charges
+                                            $numWeeks = (int)($diffHours / (7 * 24));
+                                            $wrate = $vtype['WRATE'];
+                                            $weeklyCost = $wrate * $numWeeks;
+                                            $diffHours -= $numWeeks * (7 * 24);
+                                            $rentalCost += $weeklyCost;
+                                            
+                                            // Daily charges
+                                            $numDays = (int)($diffHours / 24);
+                                            $drate = $vtype['DRATE'];
+                                            $dailyCost = $drate * $numDays;
+                                            $diffHours -= $numDays * 24;
+                                            $rentalCost += $dailyCost;
+
+                                            // Hourly charges
+                                            $numHours = $diffHours;
+                                            $hrate = $vtype['HRATE'];
+                                            $hourlyCost = $hrate * $numHours;
+                                            $diffHours -= $numHours;
+                                            $rentalCost += $dailyCost;
+
+                                            $insuranceCost = 0;
+
+                                            // Weekly charges
+                                            $wirate = $vtype['WIRATE'];
+                                            $weeklyCost = $wirate * $numWeeks;
+                                            $insuranceCost += $weeklyCost;
+                                            
+                                            // Daily charges
+                                            $dirate = $vtype['DIRATE'];
+                                            $dailyCost = $dirate * $numDays;
+                                            $insuranceCost += $dailyCost;
+
+                                            // Hourly charges
+                                            $hirate = $vtype['HIRATE'];
+                                            $hourlyCost = $hirate * $numHours;
+                                            $insuranceCost += $dailyCost;
+
+                                            $distance = $final_dist - $initial_dist;
+                                            $krate = $vtype['KRATE'];
+                                            $kCost = $krate * $distance;
+                                        
+                                            $totalCost = $rentalCost + $insuranceCost + $kCost;
+                                            
+                                            $fullTank = "";
+                                            if ($_POST['tank'] == 'full') {
+                                                $fullTank = "y";
+                                            } else {
+                                                $fullTank = "n";
+                                            }
+
+                                            // Insert the return entry into the db
+                                            $queryString = "INSERT INTO returns VALUES('$rid', to_date($final_date, '$date_format'), $final_dist, '$fullTank', $totalCost)";
+                                            $db->executePlainSQL($queryString);
+                                            $db->commit();
+
+                                            // Update the odometer reading of the vehicle
+                                            $vlicense = $vehicle['VLICENSE'];
+                                            $queryString = "UPDATE vehicles SET odometer = $final_dist WHERE vlicense = $vlicense";
+                                            $db->executePlainSQL($queryString);
+                                            $db->commit();
+
+                                            $vtname = $vehicle['VTNAME'];
+
+                                            // Pass it to the sucess page
+                                            header("Location: view_return.php?DIFF=$diffHours&DISTANCE=$distance&VTYPE=$vtname");
+                                        } else {
+                                            echo ProjectUtils::getErrorBox("The final odometer reading cannot be less than the initial odometer reading.");
+                                        }
+                                    } else {
+                                        echo ProjectUtils::getErrorBox("The return date cannot be less than the rental start date.");
+                                    }
                                 }
                             } else {
                                 echo ProjectUtils::getErrorBox("There is no rental with ID $rid");
