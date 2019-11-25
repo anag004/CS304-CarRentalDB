@@ -47,8 +47,11 @@
                         echo "<table class='table'>";
                         $hlist=array("RENTAL ID","VEHICLE LICENSE NUMBER","DRIVER'S LICENSE NUMBER","LOCATION");
                         $ilist=array("RID","VLICENSE","DLICENSE","LOCATION");
-                        for($i=0; $i<4;$i++){
+                        for($i=0; $i<2;$i++){
                             echo "<tr><td>".$hlist[$i]."</td><td>".$rental[$ilist[$i]]."</td></tr>";
+                        }
+                        for($i=2; $i<4;$i++){
+                            echo "<tr><td>".$hlist[$i]."</td><td>".$rservation[$ilist[$i]]."</td></tr>";
                         }
                         echo "</table>";
                     } else {
