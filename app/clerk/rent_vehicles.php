@@ -66,6 +66,9 @@
 
                             $db = new Database();
                             $db->connect();
+        
+                            $diffHours = 1;
+                            $date_format = 'YYYY-MM-DD:HH24:MI';
 
                             // Code for renting a vehicle   
                             // Check if a POST request is sent 
@@ -78,11 +81,20 @@
 
                                 // Check if the confirmation number is given 
                                 if (!isset($_POST['CONF_NO']) || $_POST['CONF_NO'] == "") {
-                                    // Look at the other data to make a reservation and link to the rental
-                                    $confNo = ProjectUtils::makeReservation($_POST, $db);
+   
+                                    $idate = "'" . $_POST['FROM_DATE'] . ":" . $_POST['FROM_TIME'] . "'";
+                                    $fdate = "'" . $_POST['TO_DATE'] . ":" . $_POST['TO_TIME'] . "'";
+                                    $diffHours = getDateDifference($idate, $fdate);
 
-                                    // Retrieve the reservation object and set variales
-                                    $reservation = ProjectUtils::getReservation($confNo, $db, "*");
+                                    if ($diffHours >= 0) {
+                                        // Retrieve the reservation object and set variales
+                                        // Look at the other data to make a reservation and link to the rental
+                                        $confNo = ProjectUtils::makeReservation($_POST, $db);
+                                        $reservation = ProjectUtils::getReservation($confNo, $db, "*");
+                                    } else {
+                                        $reservation = false;
+                                        echo ProjectUtils::getErrorBox("The initial date must be less than the final date.");
+                                    }
                                 } else {
                                     // Check if there is a previous rental with the same confirmation number
                                     $prevRental = getRental($_POST['CONF_NO']);
@@ -97,6 +109,9 @@
                                 }
 
                                 if ($reservation && $confNotUsed) {
+                                    // Check that the initial date < final date
+                                    echo "DIFF $diffHours<br>";
+
                                     // Find a vehicle with the given type and license between the given dates
                                     $queryString = "SELECT * FROM vehicles v WHERE NOT EXISTS ( ";
                                     $queryString .= "SELECT * FROM rentals rent, reservations resv WHERE ";
@@ -133,7 +148,7 @@
                                 } else {
                                     if (!$confNotUsed) {
                                         echo ProjectUtils::getErrorBox("This confirmation number has already been used.");
-                                    } else  {
+                                    } else  if ($diffHours >=0) {
                                         echo ProjectUtils::getErrorBox("Invalid confirmation number");
                                     }
                                 }
@@ -151,6 +166,16 @@
                                     return false;
                                 }
                             }
+
+                            function getDateDifference($idate, $fdate) {
+                                global $db, $date_format;
+        
+                                $queryString = "SELECT to_date($fdate, '$date_format') - to_date($idate, '$date_format') AS datediff FROM dual";
+                                $result = $db->executePlainSQL($queryString);
+                                $row = oci_fetch_array($result);
+        
+                                return (int)($row['DATEDIFF'] * 24);
+                            }      
                         ?>
                     <form method="post">
                         <input type = "hidden" name="FETCH_DATA" value="true">
@@ -170,7 +195,7 @@
                             <label>Car Type:</label> 
                             <?php 
                                 $result = $db->executePlainSQL("SELECT * FROM vehicle_types");
-                                echo ProjectUtils::getDropdownString($result,"VTNAME","form-control");
+                                echo ProjectUtils::getDropdownString($result,"VTNAME","form-control", false);
                             ?>
                         </div>
                         <div class="form-group no-res">
@@ -178,7 +203,7 @@
                             
                             <?php 
                                 $result = $db->executePlainSQL("SELECT DISTINCT location FROM vehicles"); //fix
-                                echo ProjectUtils::getDropdownString($result,"LOCATION","form-control");
+                                echo ProjectUtils::getDropdownString($result,"LOCATION","form-control", false);
                             ?>
                         </div>
                         
