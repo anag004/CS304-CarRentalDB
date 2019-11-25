@@ -69,6 +69,7 @@
         
                             $diffHours = 1;
                             $date_format = 'YYYY-MM-DD:HH24:MI';
+                            $driverExists = true;
 
                             // Code for renting a vehicle   
                             // Check if a POST request is sent 
@@ -85,12 +86,17 @@
                                     $idate = "'" . $_POST['FROM_DATE'] . ":" . $_POST['FROM_TIME'] . "'";
                                     $fdate = "'" . $_POST['TO_DATE'] . ":" . $_POST['TO_TIME'] . "'";
                                     $diffHours = getDateDifference($idate, $fdate);
+                                    $driverExists = existCustomer();
 
                                     if ($diffHours >= 0) {
-                                        // Retrieve the reservation object and set variales
-                                        // Look at the other data to make a reservation and link to the rental
-                                        $confNo = ProjectUtils::makeReservation($_POST, $db);
-                                        $reservation = ProjectUtils::getReservation($confNo, $db, "*");
+                                        if ($driverExists) {
+                                            // Retrieve the reservation object and set variales
+                                            // Look at the other data to make a reservation and link to the rental
+                                            $confNo = ProjectUtils::makeReservation($_POST, $db);
+                                            $reservation = ProjectUtils::getReservation($confNo, $db, "*");
+                                        } else {
+                                            echo ProjectUtils::getErrorBox("It seems you are not registered as a customer. <a href='../customer/new_customer.php'>Register Here.</a>");
+                                        } 
                                     } else {
                                         $reservation = false;
                                         echo ProjectUtils::getErrorBox("The initial date must be less than the final date.");
@@ -148,9 +154,25 @@
                                 } else {
                                     if (!$confNotUsed) {
                                         echo ProjectUtils::getErrorBox("This confirmation number has already been used.");
-                                    } else  if ($diffHours >=0) {
+                                    } else  if ($diffHours >=0 && $driverExists) {
                                         echo ProjectUtils::getErrorBox("Invalid confirmation number");
                                     }
+                                }
+                            }
+
+                            // Checks if there exists some customer with the given dlicense
+                            function existCustomer() {
+                                global $db; 
+                                $result = $db->executePlainSQL("SELECT COUNT(*) FROM customers WHERE dlicense = " . $_POST['DLICENSE']);
+                                if (($row = oci_fetch_row($result)) != false) {
+                                    if ($row[0] == 0) {
+                                        return false;
+                                    } else {
+                                        return true;
+                                    }
+                                } else {
+                                    echo ProjectUtils::getErrorBox("DBError");
+                                    return false;
                                 }
                             }
 
