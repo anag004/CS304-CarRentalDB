@@ -38,10 +38,11 @@
                     $queryString=false;
                     $out=array('','');
                     $showButton=false;
+                    $whereString=false;
                     if ($_GET['FETCH_DATA'] == "true") {
                         $whereString = ProjectUtils::getVehicleQueryString($_GET, $db);
                         $queryString = "SELECT * FROM vehicles v" . $whereString;
-                        if ($whereString) {
+                        if ($whereString!==false) {
                             $showButton=true;
                             $result = $db->executePlainSQL($queryString);
                             $out = ProjectUtils::getResultInTable($result, array('VLICENSE', 'MAKE', 'YEAR', 'COLOR', 'ODOMETER', 'VTNAME', 'LOCATION', 'CITY'));
@@ -85,7 +86,7 @@
                 </div>
                 <div class="card-footer">
                 <?php
-                    if($showButton){
+                    if($whereString!==false){
                         echo '<button type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#myModal">
                         Show Results
                     </button><span class="pl-3">'.$out[0].' vehicle(s) found</span>';
