@@ -187,11 +187,8 @@
                                 $queryString .= " WHERE rent.vlicense = v.vlicense AND rent.conf_no = res.conf_no ";
                                 $queryString .= " AND v.location  = '$location'";
                                 if ($_GET['date'] != "") {
-                                    echo "DATENO<br>";
                                     $queryString .= " AND to_date($start_date, $date_format) <= res.from_datetime ";
                                     $queryString .= " AND to_date($end_date, $date_format) >= res.from_datetime ";
-                                } else {
-                                    echo "DATEEMPTY<br>";
                                 }
                                 $queryString .= " ORDER BY v.vtname";
 
@@ -384,7 +381,7 @@
                         
                         <div class="form-group">
                             <label>Date (leave blank for all):</label> 
-                            <input type='date' name="date" class="form-control">
+                            <input type='date' name="date" class="form-control" min="1980-01-01">
                         </div>
                         <input type='submit' value="Generate Report" class="btn btn-info btn-sm">
                         <input type='button' onclick="window.location.href='./reports.php'" value="Reset" class="btn btn-info btn-sm">

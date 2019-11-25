@@ -95,7 +95,7 @@
                                             $confNo = ProjectUtils::makeReservation($_POST, $db);
                                             $reservation = ProjectUtils::getReservation($confNo, $db, "*");
                                         } else {
-                                            echo ProjectUtils::getErrorBox("It seems you are not registered as a customer. <a href='../customer/new_customer.php'>Register Here.</a>");
+                                            echo ProjectUtils::getErrorBox("It seems you are not registered as a customer. <a href='../customer/new_customer.php?redirect_to=rent'>Register Here.</a>");
                                         } 
                                     } else {
                                         $reservation = false;
@@ -157,6 +157,11 @@
                                     } else  if ($diffHours >=0 && $driverExists) {
                                         echo ProjectUtils::getErrorBox("Invalid confirmation number");
                                     }
+                                }
+                            }
+                            else{
+                                if(isset($_GET['STATUS']) and isset($_GET['DLICENSE'])){
+                                    echo ProjectUtils::getErrorBox("Account with license number ".$_GET['DLICENSE']." registered successfully.","blue");
                                 }
                             }
 
@@ -232,13 +237,13 @@
                         <div class="form-group no-res">
                             <label>From:</label> 
                             
-                            <input type='date' name="FROM_DATE" class="form-control">
+                            <input type='date' name="FROM_DATE" class="form-control" min="1980-01-01">
                             <input type='time' name="FROM_TIME" class="form-control">
                         </div>
                         <div class="form-group no-res">        
                             <label>To: </label>
                             
-                            <input type='date' name="TO_DATE" class="form-control">
+                            <input type='date' name="TO_DATE" class="form-control" min="1980-01-01">
                             <input type='time' name="TO_TIME" class="form-control">
                         </div>
                         <div class="form-group no-res">
@@ -255,7 +260,7 @@
                         </div>
                         <div class="form-group">
                             <label>Card Expiry Date:</label>
-                            <input type='date' name="EXP_DATE" class="form-control">
+                            <input type='date' name="EXP_DATE" class="form-control" min="1980-01-01">
                         </div>
                         <input type='submit' value="Rent Vehicle" class="btn btn-info btn-sm">
                         <input type='button' onclick="window.location.href='./rent_vehicles.php'" value="Reset" class="btn btn-info btn-sm" required>

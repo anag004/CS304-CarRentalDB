@@ -21,8 +21,61 @@
                     </h3>
                 </div>
                 <div class="card-body">
+                    <?php
+                        // Check if data has been POSTed
+                        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+                            // Registers a new customer
+                            require "../Database.php";
+                            require "../ProjectUtils.php";
+
+                            $db = new Database();
+                            $db->connect();
+
+                            // Check that the driver's license and cellphone don't already exist
+                            $queryString = "SELECT * FROM customers WHERE dlicense = " . $_POST['DLICENSE'];
+                            $result = $db->executePlainSQL($queryString);
+
+                            if (($row = oci_fetch_array($result)) != false) {
+                                echo ProjectUtils::getErrorBox("A driver with license " . $_POST['DLICENSE'] . " already exists.");
+                            } else {
+                                $queryString = "SELECT * FROM customers WHERE cellphone = " . $_POST['CELLPHONE'];
+                                $result = $db->executePlainSQL($queryString);
+
+                                if (($row = oci_fetch_array($result)) != false) {
+                                    echo ProjectUtils::getErrorBox("A driver with cellphone " . $_POST['CELLPHONE'] . " already exists.");
+                                } else {
+                                    // Assemble the SQL query
+                                    $queryString = "INSERT INTO CUSTOMERS VALUES(";
+                                    $queryString .= $_POST['CELLPHONE'] . ", ";
+                                    $queryString .= "'" . $_POST['NAME'] . "', ";
+                                    $queryString .= "'" . $_POST['ADDRESS'] . "', ";
+                                    $queryString .= $_POST['DLICENSE'] . ")";
+
+                                    // Insert into the database and commit
+                                    $db->executePlainSQL($queryString);
+                                    $db->commit();
+
+                                    // Redirect to success page
+                                    if($_POST['redirect_to']=="rent"){
+                                        header("Location: ../clerk/rent_vehicles.php?STATUS=registered&DLICENSE=".$_POST['DLICENSE']);
+                                    }
+                                    else{
+                                        header("Location: make_reservations.php?STATUS=registered&DLICENSE=".$_POST['DLICENSE']);
+                                    }
+                                }
+                            }
+                        }
+                    ?>
                     <form method="post">
                         <div class="form-group">
+                        <?php
+                            $redirect='';
+                            if (isset($_REQUEST['redirect_to'])) {
+                                $redirect=$_REQUEST['redirect_to'];
+                            }
+                            echo '<input type = "hidden" name="redirect_to" value="'.$redirect.'">'
+                        ?>
+
                             <label> Name: </label>
                             <input type='text' name='NAME' class="form-control" required="true">
                         </div>
@@ -51,45 +104,5 @@
         </div>
         <div class="col-md-2"></div>
     </div>
-    <?php
-        // Check if data has been POSTed
-        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-            // Registers a new customer
-            require "../Database.php";
-            require "../ProjectUtils.php";
-
-            $db = new Database();
-            $db->connect();
-
-            // Check that the driver's license and cellphone don't already exist
-            $queryString = "SELECT * FROM customers WHERE dlicense = " . $_POST['DLICENSE'];
-            $result = $db->executePlainSQL($queryString);
-
-            if (($row = oci_fetch_array($result)) != false) {
-                echo ProjectUtils::getErrorBox("A driver with license " . $_POST['DLICENSE'] . " already exists.");
-            } else {
-                $queryString = "SELECT * FROM customers WHERE cellphone = " . $_POST['CELLPHONE'];
-                $result = $db->executePlainSQL($queryString);
-
-                if (($row = oci_fetch_array($result)) != false) {
-                    echo ProjectUtils::getErrorBox("A driver with cellphone " . $_POST['CELLPHONE'] . " already exists.");
-                } else {
-                    // Assemble the SQL query
-                    $queryString = "INSERT INTO CUSTOMERS VALUES(";
-                    $queryString .= $_POST['CELLPHONE'] . ", ";
-                    $queryString .= "'" . $_POST['NAME'] . "', ";
-                    $queryString .= "'" . $_POST['ADDRESS'] . "', ";
-                    $queryString .= $_POST['DLICENSE'] . ")";
-
-                    // Insert into the database and commit
-                    $db->executePlainSQL($queryString);
-                    $db->commit();
-
-                    // Redirect to success page
-                    header("Location: make_reservations.php?STATUS=registered&DLICENSE=".$_POST['DLICENSE']);
-                }
-            }
-        }
-    ?>
 </body>
 </html> 

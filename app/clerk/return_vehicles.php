@@ -212,7 +212,7 @@
                         </div>
                         <div class="form-group">
                             <label>Return Time:</label> 
-                                <input type='date' name="date" class="form-control" required="true">
+                                <input type='date' name="date" class="form-control" required="true" min="1980-01-01">
                                 <input type='time' name="time" class="form-control" required="true">
                         </div>
                         <div class="form-group">

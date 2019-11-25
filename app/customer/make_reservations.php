@@ -56,7 +56,7 @@
                                     header("Location: view_reservation.php?CONF_NO=" . $confNo);
                                 }
                             } else {
-                                echo ProjectUtils::getErrorBox("It seems you are not registered as a customer. <a href='new_customer.php'>Register Here.</a>");
+                                echo ProjectUtils::getErrorBox("It seems you are not registered as a customer. <a href='new_customer.php?redirect_to=reserve'>Register Here.</a>");
                             }
                         } else {
                             echo ProjectUtils::getErrorBox("No vehicles exist.");
@@ -134,13 +134,13 @@
                         <div class="form-group">
                             <label>From:</label> 
                             
-                            <input type='date' name="FROM_DATE" class="form-control" required="true" value="01/18/1999">
+                            <input type='date' name="FROM_DATE" class="form-control" required="true" value="01/18/1999" min="1980-01-01">
                             <input type='time' name="FROM_TIME" class="form-control" required="true" value="23:59">
                         </div>
                         <div class="form-group">        
                             <label>To: </label>
                             
-                            <input type='date' name="TO_DATE" class="form-control" required="true" value="01/18/1999">
+                            <input type='date' name="TO_DATE" class="form-control" required="true" value="01/18/1999" min="1980-01-01">
                             <input type='time' name="TO_TIME" class="form-control" required="true" value="23:59">
                         </div>
                         <div class="form-group">

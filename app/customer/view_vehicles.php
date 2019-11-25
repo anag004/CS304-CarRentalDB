@@ -69,13 +69,13 @@
                         <div class="form-group">
                             <label>From:</label> 
                             
-                            <input type='date' name="FROM_DATE" class="form-control">
+                            <input type='date' name="FROM_DATE" class="form-control" min="1980-01-01">
                             <input type='time' name="FROM_TIME" class="form-control">
                         </div>
                         <div class="form-group">        
                             <label>To: </label>
                             
-                            <input type='date' name="TO_DATE" class="form-control">
+                            <input type='date' name="TO_DATE" class="form-control" min="1980-01-01">
                             <input type='time' name="TO_TIME" class="form-control">
                         </div>
                         
