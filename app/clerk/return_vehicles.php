@@ -33,7 +33,7 @@
                         <input type = "hidden" name="FETCH_DATA" value="true">
                         <div class="form-group">
                             <label>Rental ID:</label>
-                            <input type="text" name="rid" pattern="[0-9]*" class="form-control">
+                            <input type="text" name="rid" class="form-control">
                         </div>
                         <div class="form-group">
                             <label>Return Time:</label> 

@@ -141,7 +141,7 @@
                         </div>
                         <div class="form-group res">
                             <label>Confirmation Number</label>
-                            <input type="text" name="CONF_NO" pattern="[0-9]*" class="form-control">
+                            <input type="text" name="CONF_NO" class="form-control">
                         </div>
                         <div class="form-group no-res">
                             <label>Car Type:</label> 
