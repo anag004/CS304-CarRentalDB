@@ -51,7 +51,7 @@
                             echo "<tr><td>".$hlist[$i]."</td><td>".$rental[$ilist[$i]]."</td></tr>";
                         }
                         for($i=2; $i<4;$i++){
-                            echo "<tr><td>".$hlist[$i]."</td><td>".$rservation[$ilist[$i]]."</td></tr>";
+                            echo "<tr><td>".$hlist[$i]."</td><td>".$reservation[$ilist[$i]]."</td></tr>";
                         }
                         echo "</table>";
                     } else {
