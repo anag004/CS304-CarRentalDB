@@ -97,7 +97,7 @@
                             <label>Car Type:</label> 
                             <?php 
                                 $result = $db->executePlainSQL("SELECT * FROM vehicle_types");
-                                echo ProjectUtils::getDropdownString($result,"VTNAME","form-control");
+                                echo ProjectUtils::getDropdownString($result,"VTNAME","form-control", false);
                             ?>
                         </div>
                         <div class="form-group">
@@ -105,7 +105,7 @@
                             
                             <?php 
                                 $result = $db->executePlainSQL("SELECT DISTINCT location FROM vehicles"); //fix
-                                echo ProjectUtils::getDropdownString($result,"LOCATION","form-control");
+                                echo ProjectUtils::getDropdownString($result,"LOCATION","form-control", false);
                             ?>
                         </div>
                         
