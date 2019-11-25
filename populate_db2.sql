@@ -274,7 +274,7 @@ insert into reservations values ('4444', 'electric', 4, to_date('1998/06/17:12:0
 
 insert into reservations values ('5000', 'electric', 7, to_date('1998/2/3:2:00PM', 'yyyy/mm/dd:hh:miam'), to_date('1998/3/1:3:00PM', 'yyyy/mm/dd:hh:miam'), 'kerrisdale');
 
-insert into reservations values ('5001', 'minivan', 17, to_date('2000/12/15:11:00AM', 'yyyy/mm/dd:hh:miam'), to_date('2000/13/2:11:00AM', 'yyyy/mm/dd:hh:miam'), 'dunbar');
+insert into reservations values ('5001', 'minivan', 17, to_date('2000/12/15:11:00AM', 'yyyy/mm/dd:hh:miam'), to_date('2000/12/30:11:00AM', 'yyyy/mm/dd:hh:miam'), 'dunbar');
 
 insert into reservations values ('5002', 'truck', 13, to_date('1998/5/15:10:00AM', 'yyyy/mm/dd:hh:miam'), to_date('1998/6/5:10:00AM', 'yyyy/mm/dd:hh:miam'), 'point grey');
 
@@ -292,9 +292,9 @@ insert into reservations values ('5008', 'truck', 20, to_date('1999/7/1:9:00PM',
 
 insert into reservations values ('5009', 'electric', 3, to_date('1997/10/16:9:00PM', 'yyyy/mm/dd:hh:miam'), to_date('1997/11/10:9:00PM', 'yyyy/mm/dd:hh:miam'), 'dunbar');
 
-insert into reservations values ('5010', 'sedan', 13, to_date('2004/12/24:10:00PM', 'yyyy/mm/dd:hh:miam'), to_date('2004/13/9:10:00PM', 'yyyy/mm/dd:hh:miam'), 'kits');
+insert into reservations values ('5010', 'sedan', 13, to_date('2004/12/24:10:00PM', 'yyyy/mm/dd:hh:miam'), to_date('2004/12/30:10:00PM', 'yyyy/mm/dd:hh:miam'), 'kits');
 
-insert into reservations values ('5011', 'minivan', 12, to_date('1995/12/22:11:00PM', 'yyyy/mm/dd:hh:miam'), to_date('1995/13/5:11:00PM', 'yyyy/mm/dd:hh:miam'), 'ubc');
+insert into reservations values ('5011', 'minivan', 12, to_date('1995/12/22:11:00PM', 'yyyy/mm/dd:hh:miam'), to_date('1995/12/30:11:00PM', 'yyyy/mm/dd:hh:miam'), 'ubc');
 
 insert into reservations values ('5012', 'SUV', 18, to_date('2002/4/4:2:00AM', 'yyyy/mm/dd:hh:miam'), to_date('2002/4/25:2:00AM', 'yyyy/mm/dd:hh:miam'), 'kits');
 
@@ -332,7 +332,7 @@ insert into reservations values ('5028', 'SUV', 11, to_date('1995/11/27:9:00PM',
 
 insert into reservations values ('5029', 'electric', 20, to_date('2001/8/4:7:00AM', 'yyyy/mm/dd:hh:miam'), to_date('2001/8/27:7:00AM', 'yyyy/mm/dd:hh:miam'), 'point grey');
 
-insert into reservations values ('5030', 'wagon', 14, to_date('2003/12/17:7:00AM', 'yyyy/mm/dd:hh:miam'), to_date('2003/13/1:8:00AM', 'yyyy/mm/dd:hh:miam'), 'downtown');
+insert into reservations values ('5030', 'wagon', 14, to_date('2003/12/17:7:00AM', 'yyyy/mm/dd:hh:miam'), to_date('2003/12/30:8:00AM', 'yyyy/mm/dd:hh:miam'), 'downtown');
 
 insert into reservations values ('5031', 'SUV', 18, to_date('1997/6/17:12:00PM', 'yyyy/mm/dd:hh:miam'), to_date('1997/7/7:12:00PM', 'yyyy/mm/dd:hh:miam'), 'downtown');
 
@@ -540,7 +540,7 @@ insert into returns values ('24', to_date('2018/11/13:10:00PM', 'yyyy/mm/dd:hh:m
 
 insert into returns values ('19', to_date('2014/6/2:5:00AM', 'yyyy/mm/dd:hh:miam'), 952, 'n', 12022);
 
-insert into returns values ('4', to_date('2012/2/4:11:00PM', 'yyyy/mm/dd:hh:miam'), 937, 'n', 15878);
+insert into returns values ('29', to_date('2012/2/4:11:00PM', 'yyyy/mm/dd:hh:miam'), 937, 'n', 15878);
 
 insert into returns values ('15', to_date('2015/5/28:9:00PM', 'yyyy/mm/dd:hh:miam'), 915, 'y', 12981);
 
@@ -548,9 +548,9 @@ insert into returns values ('12', to_date('2013/11/3:9:00PM', 'yyyy/mm/dd:hh:mia
 
 insert into returns values ('5', to_date('2018/7/29:2:00PM', 'yyyy/mm/dd:hh:miam'), 937, 'y', 15964);
 
-insert into returns values ('4', to_date('2017/5/5:12:00PM', 'yyyy/mm/dd:hh:miam'), 862, 'y', 13104);
+insert into returns values ('30', to_date('2017/5/5:12:00PM', 'yyyy/mm/dd:hh:miam'), 862, 'y', 13104);
 
-insert into returns values ('13', to_date('2012/4/20:2:00PM', 'yyyy/mm/dd:hh:miam'), 1026, 'n', 16523);
+insert into returns values ('28', to_date('2012/4/20:2:00PM', 'yyyy/mm/dd:hh:miam'), 1026, 'n', 16523);
 
 insert into returns values ('24', to_date('2012/2/9:12:00AM', 'yyyy/mm/dd:hh:miam'), 917, 'y', 15375);
 
