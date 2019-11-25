@@ -95,48 +95,19 @@
                     </h3>
                 </div>
                 <div class="card-body">
-                    <form method="get">
-                        <input type = "hidden" name="FETCH_DATA" value="true">
-                        <div class="form-group">
-                            <label>Report Type:</label>
-                            <select name="report_type" class="form-control">
-                                <option value="total_rentals">Total Rentals</option>
-                                <option value="branch_rentals">Branch Rentals</option>
-                                <option value="total_returns">Total Returns</option>
-                                <option value="branch_returns">Branch Returns</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label>Branch:</label> 
-                            
-                            <?php 
-                                require "../Database.php";
-                                require "../ProjectUtils.php";
-                                $db = new Database();
-                                $db->connect();
-                                $result = $db->executePlainSQL("SELECT DISTINCT location FROM vehicles"); //fix
-                                echo ProjectUtils::getDropdownString($result,"LOCATION","form-control");
-                            ?>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label>Date:</label> 
-                            
-                            <input type='date' name="date" class="form-control" required="true">
-                        </div>
-                        <input type='submit' value="Generate Report" class="btn btn-info btn-sm">
-                        <input type='button' onclick="window.location.href='./reports.php'" value="Reset" class="btn btn-info btn-sm">
-                    </form> 
-                </div>
-                <div class="card-footer">
                 <?php
+                    require "../Database.php";
+                    require "../ProjectUtils.php";
+                    $db = new Database();
+                    $db->connect();
                     $out=false;
+                    $genButton=false;
                     // Check if data needs to be fetched
                     if ($_GET['FETCH_DATA'] == true) {
                         // Check the kind of report to be generated
                         if ($_GET['report_type'] == 'total_rentals') {
                             // Report for all branches grouped by vehicle category and branch
-
+                            $genButton=true;
                             // Get the two dates set up
                             $date_format = "'YYYY-MM-DD:HH:MIam'";
                             $start_date = "'" . $_GET['date'] . ":12:00AM'";
@@ -197,6 +168,7 @@
                         } else if ($_GET['report_type'] == 'branch_rentals') {
                             if ($_GET['LOCATION'] == 'all') {
                                 echo ProjectUtils::getErrorBox("To view branch rentals you must select a branch");
+                                $genButton=false;
                             } else {
                                 // Get the two dates set up
                                 $date_format = "'YYYY-MM-DD:HH:MIam'";
@@ -306,7 +278,8 @@
 
                         } else if ($_GET['report_type'] == 'branch_returns') {
                             if ($_GET['LOCATION'] == 'all') {
-                                ProjectUtils::getErrorBox("To view branch returns you must select a branch.");
+                                echo ProjectUtils::getErrorBox("To view branch returns you must select a branch.");
+                                $genButton=false;
                             } else {
                                 $date_format = "'YYYY-MM-DD'";
                                 $date_value = $_GET['date'];
@@ -359,9 +332,43 @@
                                 $out.= "<strong>Grand total for the day is $total CAD</strong><br>";
                             }
                         }
+                    }
+                ?>
+                    <form method="get">
+                        <input type = "hidden" name="FETCH_DATA" value="true">
+                        <div class="form-group">
+                            <label>Report Type:</label>
+                            <select name="report_type" class="form-control">
+                                <option value="total_rentals">Total Rentals</option>
+                                <option value="branch_rentals">Branch Rentals</option>
+                                <option value="total_returns">Total Returns</option>
+                                <option value="branch_returns">Branch Returns</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Branch:</label> 
+                            
+                            <?php 
+                                $result = $db->executePlainSQL("SELECT DISTINCT location FROM vehicles"); //fix
+                                echo ProjectUtils::getDropdownString($result,"LOCATION","form-control");
+                            ?>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>Date:</label> 
+                            
+                            <input type='date' name="date" class="form-control" required="true">
+                        </div>
+                        <input type='submit' value="Generate Report" class="btn btn-info btn-sm">
+                        <input type='button' onclick="window.location.href='./reports.php'" value="Reset" class="btn btn-info btn-sm">
+                    </form> 
+                </div>
+                <div class="card-footer">
+                <?php
+                    if($genButton){
                         echo '<button type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#myModal">
-                                Show Results
-                                </button><span class="pl-3">';
+                        Show Results
+                        </button><span class="pl-3">';
                     }
                 ?>
                 </div>
