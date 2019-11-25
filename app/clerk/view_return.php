@@ -45,13 +45,11 @@
                     $rentalCost = 0; 
 
                     // Rental charges
-                    echo "<h4>Rental Charges</h4><br>";
 
                     // Weekly charges
                     $numWeeks = (int)($diffHours / (7 * 24));
                     $wrate = $vtype['WRATE'];
                     $weeklyCost = $wrate * $numWeeks;
-                    echo "Weekly Charges: $numWeeks x $wrate = $weeklyCost<br>";
                     $diffHours -= $numWeeks * (7 * 24);
                     $rentalCost += $weeklyCost;
                     
@@ -59,7 +57,6 @@
                     $numDays = (int)($diffHours / 24);
                     $drate = $vtype['DRATE'];
                     $dailyCost = $drate * $numDays;
-                    echo "Daily Charges: $numDays x $drate = $dailyCost<br>";
                     $diffHours -= $numDays * 24;
                     $rentalCost += $dailyCost;
 
@@ -67,42 +64,32 @@
                     $numHours = $diffHours;
                     $hrate = $vtype['HRATE'];
                     $hourlyCost = $hrate * $numHours;
-                    echo "Hourly Charges: $numHours x $hrate = $hourlyCost<br>";
                     $diffHours -= $numHours;
                     $rentalCost += $dailyCost;
 
-                    echo "Total rental cost: $rentalCost<br>";
 
-                    echo "<h4>Insurance Charges</h4><br>";
                     $insuranceCost = 0;
 
                     // Weekly charges
                     $wirate = $vtype['WIRATE'];
                     $weeklyCost = $wirate * $numWeeks;
-                    echo "Weekly Charges: $numWeeks x $wirate = $weeklyCost<br>";
                     $insuranceCost += $weeklyCost;
                     
                     // Daily charges
                     $dirate = $vtype['DIRATE'];
                     $dailyCost = $dirate * $numDays;
-                    echo "Daily Charges: $numDays x $dirate = $dailyCost<br>";
                     $insuranceCost += $dailyCost;
 
                     // Hourly charges
                     $hirate = $vtype['HIRATE'];
                     $hourlyCost = $hirate * $numHours;
-                    echo "Hourly Charges: $numHours x $hirate = $hourlyCost<br>";
                     $insuranceCost += $dailyCost;
 
-                    echo "Total insurance cost: $insuranceCost<br>";
 
-                    echo "<h4>Kilometer Charges</h4><br>";
                     $krate = $vtype['KRATE'];
                     $kCost = $krate * $distance;
-                    echo "Distance charges $$krate x $distance = $kCost<br>";
 
                     $totalCost = $rentalCost + $insuranceCost + $kCost;
-                    echo "GRAND TOTAL = $totalCost<br>";
                     
                     function getVehicleType($vtname) {
                         global $db;
@@ -116,6 +103,29 @@
                             return false;
                         }
                     }
+                    echo "<strong>Rental Charges</strong><br>";
+                    echo "Weekly Charges: $numWeeks x $wrate = $weeklyCost<br>";
+                    echo "Daily Charges: $numDays x $drate = $dailyCost<br>";
+                    echo "Hourly Charges: $numHours x $hrate = $hourlyCost<br>";
+                    echo "Total rental cost: $rentalCost<br>";
+
+                    echo "<br>";
+
+                    echo "<strong>Insurance Charges</strong><br>";
+                    echo "Weekly Charges: $numWeeks x $wirate = $weeklyCost<br>";
+                    echo "Daily Charges: $numDays x $dirate = $dailyCost<br>";
+                    echo "Hourly Charges: $numHours x $hirate = $hourlyCost<br>";
+                    echo "Total insurance cost: $insuranceCost<br>";
+
+                    echo "<br>";
+
+                    echo "<strong>Kilometer Charges</strong><br>";
+                    echo "Distance charges $$krate x $distance = $kCost<br>";
+
+                    echo "<br>";
+
+                    echo "<strong>Grand Total</strong> = $totalCost<br>";
+
                 ?>
                 </div>
             </div>
