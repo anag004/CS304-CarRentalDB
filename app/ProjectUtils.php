@@ -77,7 +77,7 @@
         }
 
         // Returns an SQL command for the appropriate vehicle
-        public static function getVehicleQueryString($requestObject) {
+        public static function getVehicleQueryString($requestObject, $db) {
             $result = "";
             $counter = 0; // Stores the number of values specified
 
@@ -130,6 +130,17 @@
 
                 $to_date = ProjectUtils::constructDate($requestObject['TO_DATE'], $requestObject['TO_TIME']);
 
+                $date_format = 'YYYY-MM-DD:HH24:MI';
+                $idate = "'" . $requestObject['FROM_DATE'] . ":" . $requestObject['FROM_TIME'] . "'";
+                $fdate = "'" . $requestObject['TO_DATE'] . ":" . $requestObject['TO_TIME'] . "'";
+                
+                $diffHours = ProjectUtils::getDateDifference($idate, $fdate, $date_format, $db);
+
+                if ($diffHours < 0) {
+                    echo ProjectUtils::getErrorBox("Initial date must be less than final date.");
+                    return false;
+                }
+
                 $result = $result . "NOT EXISTS ( SELECT  * FROM rentals rent, reservations resv WHERE (" . $from_date . ", " . $to_date . ") OVERLAPS (resv.FROM_DATETIME, resv.TO_DATETIME) AND rent.vlicense = v.vlicense AND resv.conf_no = rent.conf_no )";
             } else if ($requestObject['FROM_TIME'] || $requestObject['TO_DATE'] || $requestObject['TO_TIME']) {
                 echo ProjectUtils::getErrorBox("Please fill a complete time interval");
@@ -153,6 +164,15 @@
             // echo $result;
             return $result;
         }
+
+        function getDateDifference($idate, $fdate, $date_format, $db) {
+            $queryString = "SELECT to_date($fdate, '$date_format') - to_date($idate, '$date_format') AS datediff FROM dual";
+            $result = $db->executePlainSQL($queryString);
+            $row = oci_fetch_array($result);
+
+            return (int)($row['DATEDIFF'] * 24);
+        }
+
         public static function getErrorBox($text,$color="red"){
             if($color =="red"){
                 return '<div class="alert alert-danger alert-dismissible">

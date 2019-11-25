@@ -39,7 +39,7 @@
                     $out=array('','');
                     $showButton=false;
                     if ($_GET['FETCH_DATA'] == "true") {
-                        $whereString = ProjectUtils::getVehicleQueryString($_GET);
+                        $whereString = ProjectUtils::getVehicleQueryString($_GET, $db);
                         $queryString = "SELECT * FROM vehicles v" . $whereString;
                         if ($whereString) {
                             $showButton=true;

@@ -88,7 +88,7 @@
                     function existVehicles() {
                         
                         global $db;
-                        $queryString = "SELECT COUNT(*) FROM vehicles v" . ProjectUtils::getVehicleQueryString($_POST);
+                        $queryString = "SELECT COUNT(*) FROM vehicles v" . ProjectUtils::getVehicleQueryString($_POST, $db);
                         $result = $db->executePlainSQL($queryString);
 
                         if (($row = oci_fetch_row($result)) != false) {
