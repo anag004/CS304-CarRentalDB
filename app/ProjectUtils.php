@@ -57,7 +57,7 @@
             $toDate = ProjectUtils::constructDate($requestObject['TO_DATE'], $requestObject['TO_TIME']);
             
             $insertDetails = "'" . $requestObject['VTNAME'] . "'" . ", " . $requestObject['DLICENSE'] . ", " . $fromDate . ", " . $toDate . ", '" . $requestObject['LOCATION'] . "'";
-            $confNo = hash('ripemd160', $insertDetails);
+            $confNo = hash('ripemd160', $insertDetails . rand());
             
             $result = $db_conn->executePlainSQL("INSERT INTO reservations VALUES (" . "'" . $confNo . "'" . ", " . $insertDetails . ")");
             $db_conn->commit();

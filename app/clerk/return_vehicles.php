@@ -61,7 +61,7 @@
 
                                     // Get the difference between dates in hours
                                     $diffHours = getDateDifference($initial_date, $final_date);
-
+				    $tmp = $diffHours;
                                     if ($diffHours >= 0) {
                                         if ($final_dist >= $initial_dist) {
                                             // Weekly charges
@@ -129,7 +129,7 @@
                                             $vtname = $vehicle['VTNAME'];
 
                                             // Pass it to the sucess page
-                                            header("Location: view_return.php?DIFF=$diffHours&DISTANCE=$distance&VTYPE=$vtname&DATE=$final_date&RID=$rid");
+                                            header("Location: view_return.php?DIFF=$tmp&DISTANCE=$distance&VTYPE=$vtname&DATE=$final_date&RID=$rid");
                                         } else {
                                             echo ProjectUtils::getErrorBox("The final odometer reading cannot be less than the initial odometer reading.");
                                         }
@@ -237,3 +237,4 @@
     </div>
 </body>
 </html>
+

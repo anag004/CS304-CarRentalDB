@@ -136,10 +136,11 @@
                                         $vlicense = $vehicle['VLICENSE'];
                                         $odometer = $vehicle['ODOMETER'];       
                                         $card_name = $_POST['CARD_NAME'];
+	
                                         $card_no = $_POST['CARD_NO'];
                                         $date_format = "YYYY-MM-DD";
                                         $exp_date = "to_date('" . $_POST['EXP_DATE'] . "', '" . $date_format . "')";
-                                        $rid = hash('ripemd160', $dlicense . $to_datetime . $from_datetime . $vlicense);
+                                        $rid = hash('ripemd160', $dlicense . $to_datetime . $from_datetime . $vlicense. $confNo);
 
                                         // Create the rental
                                         $queryString = "INSERT INTO rentals VALUES('" . $rid . "', " . $vlicense . ", " . $odometer . ", '" . $card_name . "', " . $card_no . ", " . $exp_date . ", '" . $confNo . "')";
